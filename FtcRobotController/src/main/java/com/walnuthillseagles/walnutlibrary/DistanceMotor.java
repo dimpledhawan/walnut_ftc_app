@@ -58,21 +58,32 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
     public void changeSpeedLimit(double mySpeedLimit){
         speedLimit = mySpeedLimit;
     }
+
+    //Debug Field
+    public boolean pastWait;
     public void run(){
         //Go for it
         motor.setTargetPosition(distance);
         this.setPower(speedLimit);
+
+        //Debug
+        pastWait = false;
         //Wait until in Pos
         //@TODO Better way to do this?
-        while(!inRange(distance,motor.getCurrentPosition())) {
+        while(!inRange(distance,motor.getCurrentPosition())
+                &&Math.abs(motor.getCurrentPosition())<Math.abs(distance)) {
             try {
-                this.sleep(WAITRESOLUTION*5);
+                this.sleep(WAITRESOLUTION);
+                pastWait = true;
 
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
         this.fullStop();
+        motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        motor.setTargetPosition(0);
+        distance = 0;
     }
     public int getDistance(){
         return distance;

@@ -52,24 +52,33 @@ public class MasterLinear extends LinearOpMode {
 //              leftDriveMotor.setPower(0.9);
 
 //            telemetry.addData("Tests", "Starting First Test");
-//            leftDrive.operate(20);
-//            telemetry.addData("Distance", leftDrive.getDistance());
+//            leftDrive.operate(100);
 //            leftDrive.waitForCompletion();
 
-            leftTimedDrive.operate(5);
-            leftTimedDrive.waitForCompletion();
+//            leftTimedDrive.operate(5);
+//            leftTimedDrive.waitForCompletion();
 
 //            telemetry.addData("Tests", "Finished First Test");
 //            sleep(2000);
 //            telemetry.addData("Tests", "Starting Second Test");
-//            leftDrive.operate(20);
-//            leftDrive.waitForCompletion();
+            rightDrive.operate(100);
+            leftDrive.operate(100);
+
+            while(opModeIsActive()){
+                telemetry.addData("Left Power",leftDriveMotor.getPower());
+                telemetry.addData("Right Power",rightDriveMotor.getPower());
+                telemetry.addData("Left Target", leftDriveMotor.getTargetPosition());
+                telemetry.addData("Right Target", rightDriveMotor.getTargetPosition());
+                telemetry.addData("Left Pos", leftDriveMotor.getCurrentPosition());
+                telemetry.addData("Right Pos", rightDriveMotor.getCurrentPosition());
+                waitOneFullHardwareCycle();
+            }
 //            telemetry.addData("Tests", "Finished Second Test");
 //            sleep(2000);
-//            leftDrive.operate(-20);
+//            leftDrive.operate(-100);
 //            leftDrive.waitForCompletion();
 //            sleep(2000);
-//            telemetry.addData("Tests", "Complete");
+            telemetry.addData("Tests", "Complete");
         }
         catch(InterruptedException e){
             Thread.currentThread().interrupt();
