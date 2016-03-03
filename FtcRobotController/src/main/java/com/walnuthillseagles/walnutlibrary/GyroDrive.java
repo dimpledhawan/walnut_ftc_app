@@ -92,10 +92,17 @@ public class GyroDrive implements Runnable{
             int tarMin = target - TOLERANCE;
             int midPoint = target + 180;
             
-            boolean inRange;
-            //Adjust Range
+            boolean inRange = false;
+            //Adjust Range and check if we are in said range
+            //@TODO Pretty sure I messed this up
             if(tarMax >= 360 || tarMin < 0)
                 inRange = (currentVal > adjustRange(tarMin)|| currentVal<adjustRange(tarMax));
+            else
+                inRange = ((currentVal > tarMin) && currentVale < tarMax);
+            if(inRange)
+                return 0;
+            //If not in range, we need to see if we are above or below range
+            
             return 0;
         }
         private int adjustRange(int tarValue){
