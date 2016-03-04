@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by Yan Vologzhanin on 2/8/2016.
  */
-public class ContinousServo implements Drivable{
+public class ContinuousServo implements Drivable{
     private Servo servo;
     private int tablePos;
     private double deadZone;
@@ -14,8 +14,8 @@ public class ContinousServo implements Drivable{
     private String name;
     private double trueCenter;
 
-    public ContinousServo(Servo myServo, String myName, double startPos,
-                    String myControl, boolean reverse, double myDeadzone) {
+    public ContinuousServo(Servo myServo, String myName, double startPos,
+                           String myControl, boolean reverse, double myDeadzone) {
         servo = myServo;
         name = myName;
         //Assign Table Position

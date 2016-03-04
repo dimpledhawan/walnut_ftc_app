@@ -27,6 +27,7 @@ public class SimpleMotor {
             }
         };
         motor = myMotor;
+        this.stop();
         name = myName;
         if(encoderCheck){
             hasEncoders = true;
