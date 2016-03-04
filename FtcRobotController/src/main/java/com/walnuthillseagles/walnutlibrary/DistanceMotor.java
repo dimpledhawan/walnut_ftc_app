@@ -12,6 +12,7 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
 
     //Precisions of wheels.
     public static final int RANGEVAL = 30;
+    public static final long CLEARWAIT = 20;
     //Fields
     //Please measure in Inches
     private double circumference;
@@ -20,6 +21,8 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
     private int distance;
     //Parrallel Thread
     private Thread runner;
+
+    public int operateCount;
     public DistanceMotor(DcMotor myMotor, String myName, boolean encoderCheck,boolean isReveresed,
                          double myDiameter,double myGearRatio, int myEncoder){
         //Create Motor
@@ -27,14 +30,14 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
         motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         while(motor.getMode()!= DcMotorController.RunMode.RUN_TO_POSITION){
             try{
-                Thread.sleep(WAITRESOLUTION);
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
             }
             catch(InterruptedException e){
                 Thread.currentThread().interrupt();
             }
-
         }
-
         //Values involving bot
         circumference = myDiameter*Math.PI;
         gearRatio = myGearRatio;
@@ -49,6 +52,7 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
 
         runner = new Thread();
 
+        operateCount = 0;
         //"Prime" Motor
         //@TODO Figure out how to do this for user
 
@@ -62,9 +66,20 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
 
         //Start new process
         runner = new Thread(this);
-        this.motor.setTargetPosition(distance);
-        this.setPower(speedLimit);
+
+        //Clear locks from main thread
+        synchronized (this){
+            try{
+                this.wait(CLEARWAIT);
+            }
+            catch(InterruptedException e){
+                this.stop();
+            }
+
+        }
         runner.start();
+
+
     }
     public void operate(double inches) {
         this.operate(inches, 1);
@@ -76,22 +91,29 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
     public void run(){
         //Go for it
         try {
-            timer.sleep(WAITRESOLUTION*5);
+            this.motor.setTargetPosition(distance);
+            this.setPower(speedLimit);
             //Debug
             //Wait until in Pos
             //@TODO Better way to do this?
-            while (!inRange(distance, motor.getCurrentPosition())
-                    || Math.abs(motor.getCurrentPosition()) > Math.abs(distance)) {
-
-                    this.sleep(WAITRESOLUTION);
-
-
+            //Wait for target position to update
+            while(motor.getTargetPosition()==0 && distance != 0){
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
             }
+            do   {
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
+
+            }while(!inRange(distance, motor.getCurrentPosition()));
+
             this.fullStop();
             motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             motor.setTargetPosition(0);
             distance = 0;
-
+            operateCount++;
             runner = new Thread(this);
         }
         catch (InterruptedException e) {
@@ -115,15 +137,12 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
         }
         catch(InterruptedException e){
             motor.setPower(0);
-            motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
             Thread.currentThread().interrupt();
         }
-
-
     }
     //Timers
     public void waitForCompletion() throws InterruptedException{
-        if(runner != null)
+        if(runner != null && runner.isAlive())
             runner.join();
     }
     //Private helper methods

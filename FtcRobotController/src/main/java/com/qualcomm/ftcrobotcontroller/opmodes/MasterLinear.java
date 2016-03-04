@@ -19,6 +19,7 @@ public class MasterLinear extends LinearOpMode {
     private DcMotor rightDriveMotor;
     private DistanceMotor leftDrive;
     private DistanceMotor rightDrive;
+    private DistanceDrive drive;
     private TimedMotor leftTimedDrive;
     //Assignment
 
@@ -29,6 +30,7 @@ public class MasterLinear extends LinearOpMode {
 
         leftDrive = new DistanceMotor(leftDriveMotor, "Left",true,false,4,1,1440);
         rightDrive = new DistanceMotor(rightDriveMotor, "Right",true, true, 4,1,1440);
+        drive = new DistanceDrive(leftDrive,rightDrive,18);
 
     }
     @Override
@@ -45,28 +47,37 @@ public class MasterLinear extends LinearOpMode {
         }
         //Running Code
         try{
-//              sleep(1000);
-//              leftDriveMotor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-//              leftDriveMotor.setTargetPosition(4000);
-//              leftDriveMotor.setPower(0.9);
 
-//            telemetry.addData("Tests", "Starting First Test");
-//            leftDrive.operate(100);
-//            leftDrive.waitForCompletion();
-
-//            leftTimedDrive.operate(5);
-//            leftTimedDrive.waitForCompletion();
-
+            //@NOTE: This section is used for "priming" distance motor. It's kinda wierd
+            //PLEASE DO NOT REMOVE IT FOR NOW
+            //Thx :3
+            //@TODO Is this needed, or was this my own mistake?
             telemetry.addData("Tests", "Finished First Test");
             leftDrive.operate(0);
             telemetry.addData("Tests", "Waiting for motor to prime");
             telemetry.addData("Left Mode", leftDriveMotor.getMode());
             leftDrive.waitForCompletion();
 
+            //^^^^DONT REMOVE THIS^^^^^//
+
             telemetry.addData("Tests", "Starting Right Motor");
-            rightDrive.operate(100);
+            rightDrive.operate(20);
             telemetry.addData("Tests", "Starting Left Motor");
-            leftDrive.operate(100);
+            leftDrive.operate(20);
+
+            leftDrive.waitForCompletion();
+            rightDrive.waitForCompletion();
+
+            rightDrive.operate(-20);
+            leftDrive.operate(-20);
+            leftDrive.waitForCompletion();
+            rightDrive.waitForCompletion();
+
+            drive.linearDrive(30,1);
+            drive.waitForCompletion();
+            drive.tankTurn(90,1);
+            drive.waitForCompletion();
+
 
 
 
@@ -76,12 +87,14 @@ public class MasterLinear extends LinearOpMode {
                 telemetry.addData("Left Pos", leftDriveMotor.getCurrentPosition());
                 telemetry.addData("Left Speed", leftDrive.getSpeedLimit());
                 telemetry.addData("Left Mode", leftDriveMotor.getMode());
+                telemetry.addData("Left Operates",leftDrive.operateCount);
 
                 telemetry.addData("Right Power",rightDriveMotor.getPower());
                 telemetry.addData("Right Target", rightDriveMotor.getTargetPosition());
                 telemetry.addData("Right Pos", rightDriveMotor.getCurrentPosition());
                 telemetry.addData("Right Speed",rightDrive.getSpeedLimit());
                 telemetry.addData("Right Mode", rightDriveMotor.getMode());
+                telemetry.addData("Right Operates", rightDrive.operateCount);
 
                 waitOneFullHardwareCycle();
             }

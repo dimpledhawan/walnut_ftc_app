@@ -19,6 +19,7 @@ public class MasterTeleOp extends OpMode{
 
     //private Servo beltServo;
     private Servo climberServo;
+    private Servo beltServo;
     private Servo hookServo;
 
     //Assignment
@@ -29,7 +30,8 @@ public class MasterTeleOp extends OpMode{
     private IncMotor slideRight;
     private DigMotor spinner;
 
-    //private ContinuousServo belt;
+    private ContinuousServo belt;
+    private WalnutServo climber;
     private WalnutServo door;
     private WalnutServo hook;
     //Control Scheme
@@ -43,7 +45,7 @@ public class MasterTeleOp extends OpMode{
 
         spinMotor = hardwareMap.dcMotor.get("spinners");
 
-        //beltServo = hardwareMap.servo.get("belt");
+        beltServo = hardwareMap.servo.get("belt");
         climberServo = hardwareMap.servo.get("climber");
         hookServo = hardwareMap.servo.get("hook");
         //Create Assignment
@@ -63,13 +65,14 @@ public class MasterTeleOp extends OpMode{
         slideRight =
             new IncMotor(slideRightMotor, "Sliders", false, "LEFTY2", true, 0.25);
         //@TODO Figure out how Servos want to be used
-        //belt = new ContinuousServo(beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
-
-
+        belt = new ContinuousServo(beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
 
         hook = new WalnutServo(hookServo,0,true);
         hook.addButton("LBUMP1",1);
         hook.addButton("RBUMP1",0);
+
+        climber = new WalnutServo(climberServo,0.8,true);
+        climber.addButton("X2",0.5);
 
         /*
         hook = new WalnutServo(hookServo, 0, "RBUMP1", 0, true);
@@ -84,8 +87,9 @@ public class MasterTeleOp extends OpMode{
         buttons.add(spinner);
         buttons.add(slideRight);
 
-        //buttons.add(belt);
+        buttons.add(belt);
         //buttons.add(door);
+        buttons.add(climber);
         buttons.add(hook);
     }
     public void start(){

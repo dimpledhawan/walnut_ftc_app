@@ -91,7 +91,9 @@ public class SimpleMotor {
         if (motor != null) {
             motor.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             while (motor.getCurrentPosition() != 0) {
-                this.sleep(WAITRESOLUTION);
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
             }
             motor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
