@@ -12,6 +12,7 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
 
     //Precisions of wheels.
     public static final int RANGEVAL = 30;
+    public static final long CLEARWAIT = 20;
     //Fields
     //Please measure in Inches
     private double circumference;
@@ -20,15 +21,23 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
     private int distance;
     //Parrallel Thread
     private Thread runner;
+
+    public int operateCount;
     public DistanceMotor(DcMotor myMotor, String myName, boolean encoderCheck,boolean isReveresed,
                          double myDiameter,double myGearRatio, int myEncoder){
         //Create Motor
         super(myMotor, myName, encoderCheck, isReveresed);
-        if(motor == null){
-            throw(new NullPointerException("Motor not Init'd in distance motor"));
-        }
         motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
-
+        while(motor.getMode()!= DcMotorController.RunMode.RUN_TO_POSITION){
+            try{
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
+            }
+            catch(InterruptedException e){
+                Thread.currentThread().interrupt();
+            }
+        }
         //Values involving bot
         circumference = myDiameter*Math.PI;
         gearRatio = myGearRatio;
@@ -38,20 +47,41 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
         distance = 0;
         speedLimit = 0;
 
+        motor.setTargetPosition(0);
+        motor.setPower(0);
+
         runner = new Thread();
+
+        operateCount = 0;
+        //"Prime" Motor
+        //@TODO Figure out how to do this for user
+
     }
     //Starts operation with given parameters
     public void operate(double inches, double mySpeedLimit){
         //@TODO Does this handle Going backwards?
         distance = (int)((inches / circumference / gearRatio) * encoderRot * orientation);
+        //Speedlimit is always positive
         speedLimit = Math.abs(mySpeedLimit);
-        if(distance < 0)
-            speedLimit = -1*speedLimit;
+
         //Start new process
         runner = new Thread(this);
+
+        //Clear locks from main thread
+        synchronized (this){
+            try{
+                this.wait(CLEARWAIT);
+            }
+            catch(InterruptedException e){
+                this.stop();
+            }
+
+        }
         runner.start();
+
+
     }
-    public void operate(double inches){
+    public void operate(double inches) {
         this.operate(inches, 1);
     }
     //Allows other methods to change speed midway through method
@@ -60,26 +90,60 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
     }
     public void run(){
         //Go for it
-        motor.setTargetPosition(distance);
-        this.setPower(speedLimit);
-        //Wait until in Pos
-        //@TODO Better way to do this?
-        while(!inRange(distance,motor.getCurrentPosition())) {
-            try {
-                this.sleep(WAITRESOLUTION*5);
-
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+        try {
+            this.motor.setTargetPosition(distance);
+            this.setPower(speedLimit);
+            //Debug
+            //Wait until in Pos
+            //@TODO Better way to do this?
+            //Wait for target position to update
+            while(motor.getTargetPosition()==0 && distance != 0){
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
             }
+            do   {
+                synchronized (this){
+                    this.wait(WAITRESOLUTION);
+                }
+
+            }while(!inRange(distance, motor.getCurrentPosition()));
+
+            this.fullStop();
+            motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            motor.setTargetPosition(0);
+            distance = 0;
+            operateCount++;
+            runner = new Thread(this);
         }
-        this.fullStop();
+        catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            stop();
+
+        }
     }
     public int getDistance(){
         return distance;
     }
+    public double getSpeedLimit(){return speedLimit;}
+    public void fullStop(){
+        motor.setPower(0);
+        try{
+            resetEncoder();
+            motor.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            while(motor.getMode()!= DcMotorController.RunMode.RUN_TO_POSITION){
+                timer.sleep(WAITRESOLUTION);
+        }
+        }
+        catch(InterruptedException e){
+            motor.setPower(0);
+            Thread.currentThread().interrupt();
+        }
+    }
     //Timers
     public void waitForCompletion() throws InterruptedException{
-        runner.join();
+        if(runner != null && runner.isAlive())
+            runner.join();
     }
     //Private helper methods
 

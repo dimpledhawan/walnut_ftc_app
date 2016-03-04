@@ -98,12 +98,25 @@ public class GyroDrive implements Runnable{
             if(tarMax >= 360 || tarMin < 0)
                 inRange = (currentVal > adjustRange(tarMin)|| currentVal<adjustRange(tarMax));
             else
-                inRange = ((currentVal > tarMin) && currentVale < tarMax);
+                inRange = ((currentVal > tarMin) && currentVal < tarMax);
             if(inRange)
                 return 0;
-            //If not in range, we need to see if we are above or below range
-            
-            return 0;
+            else //if(!inRange)
+            {
+                if(midPoint<target){
+                    if(currentVal>midPoint && currentVal<target)
+                        return -1;
+                    else //if(currentVal<midPoint || currentVal>target)
+                        return 1;
+                }
+                else //if(midPoint>target)
+                {
+                    if(currentVal>target && currentVal < target)
+                        return 1;
+                    else // if(currentVal>midPoint || currentVal<target)
+                        return -1;
+                }
+            }
         }
         private int adjustRange(int tarValue){
             int temp = tarValue; 
