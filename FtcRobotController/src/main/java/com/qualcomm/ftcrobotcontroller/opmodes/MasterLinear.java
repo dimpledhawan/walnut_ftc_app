@@ -29,7 +29,6 @@ public class MasterLinear extends LinearOpMode {
 
         leftDrive = new DistanceMotor(leftDriveMotor, "Left",true,false,4,1,1440);
         rightDrive = new DistanceMotor(rightDriveMotor, "Right",true, true, 4,1,1440);
-        leftTimedDrive = new TimedMotor(leftDriveMotor,"Left",true,false);
 
     }
     @Override
@@ -58,19 +57,32 @@ public class MasterLinear extends LinearOpMode {
 //            leftTimedDrive.operate(5);
 //            leftTimedDrive.waitForCompletion();
 
-//            telemetry.addData("Tests", "Finished First Test");
-//            sleep(2000);
-//            telemetry.addData("Tests", "Starting Second Test");
+            telemetry.addData("Tests", "Finished First Test");
+            leftDrive.operate(0);
+            telemetry.addData("Tests", "Waiting for motor to prime");
+            telemetry.addData("Left Mode", leftDriveMotor.getMode());
+            leftDrive.waitForCompletion();
+
+            telemetry.addData("Tests", "Starting Right Motor");
             rightDrive.operate(100);
+            telemetry.addData("Tests", "Starting Left Motor");
             leftDrive.operate(100);
+
+
 
             while(opModeIsActive()){
                 telemetry.addData("Left Power",leftDriveMotor.getPower());
-                telemetry.addData("Right Power",rightDriveMotor.getPower());
                 telemetry.addData("Left Target", leftDriveMotor.getTargetPosition());
-                telemetry.addData("Right Target", rightDriveMotor.getTargetPosition());
                 telemetry.addData("Left Pos", leftDriveMotor.getCurrentPosition());
+                telemetry.addData("Left Speed", leftDrive.getSpeedLimit());
+                telemetry.addData("Left Mode", leftDriveMotor.getMode());
+
+                telemetry.addData("Right Power",rightDriveMotor.getPower());
+                telemetry.addData("Right Target", rightDriveMotor.getTargetPosition());
                 telemetry.addData("Right Pos", rightDriveMotor.getCurrentPosition());
+                telemetry.addData("Right Speed",rightDrive.getSpeedLimit());
+                telemetry.addData("Right Mode", rightDriveMotor.getMode());
+
                 waitOneFullHardwareCycle();
             }
 //            telemetry.addData("Tests", "Finished Second Test");

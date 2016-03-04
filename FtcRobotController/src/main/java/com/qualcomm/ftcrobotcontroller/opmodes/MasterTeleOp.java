@@ -29,7 +29,7 @@ public class MasterTeleOp extends OpMode{
     private IncMotor slideRight;
     private DigMotor spinner;
 
-    //private ContinousServo belt;
+    //private ContinuousServo belt;
     private WalnutServo door;
     private WalnutServo hook;
     //Control Scheme
@@ -63,7 +63,7 @@ public class MasterTeleOp extends OpMode{
         slideRight =
             new IncMotor(slideRightMotor, "Sliders", false, "LEFTY2", true, 0.25);
         //@TODO Figure out how Servos want to be used
-        //belt = new ContinousServo(beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
+        //belt = new ContinuousServo(beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
 
 
 
