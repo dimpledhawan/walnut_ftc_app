@@ -17,21 +17,20 @@ public class MasterLinear extends LinearOpMode {
     //Hardware
     private DcMotor leftDriveMotor;
     private DcMotor rightDriveMotor;
+    //Hardware
+    private GoldConfig hardware;
     private DistanceMotor leftDrive;
     private DistanceMotor rightDrive;
     private DistanceDrive drive;
-    private TimedMotor leftTimedDrive;
     //Assignment
 
     public void initRobot(){
-        leftDriveMotor = hardwareMap.dcMotor.get("motorLeft");
-        rightDriveMotor = hardwareMap.dcMotor.get("motorRight");
+        hardware = new GoldConfig(this);
         telemetry.addData("Tests", "Hardware Init'd");
 
-        leftDrive = new DistanceMotor(leftDriveMotor, "Left",true,false,4,1,1440);
-        rightDrive = new DistanceMotor(rightDriveMotor, "Right",true, true, 4,1,1440);
-        drive = new DistanceDrive(leftDrive,rightDrive,18);
-
+        leftDrive = new DistanceMotor(hardware.leftMotor, "Left",true,false,4,1,1440);
+        rightDrive = new DistanceMotor(hardware.rightMotor, "Right",true, true, 4,1,1440);
+        drive = new DistanceDrive(leftDrive,rightDrive,17.5);
     }
     @Override
     public void runOpMode(){
@@ -41,12 +40,6 @@ public class MasterLinear extends LinearOpMode {
             initRobot();
             telemetry.addData("Tests", "Robot Init'd");
             waitForStart();
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
-        //Running Code
-        try{
 
             //@NOTE: This section is used for "priming" distance motor. It's kinda wierd
             //PLEASE DO NOT REMOVE IT FOR NOW
@@ -106,6 +99,7 @@ public class MasterLinear extends LinearOpMode {
             telemetry.addData("Tests", "Complete");
         }
         catch(InterruptedException e){
+            hardware.stop();
             Thread.currentThread().interrupt();
         }
 
