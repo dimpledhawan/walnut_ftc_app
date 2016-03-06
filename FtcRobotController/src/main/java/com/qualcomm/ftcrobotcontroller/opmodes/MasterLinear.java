@@ -15,14 +15,13 @@ import com.walnuthillseagles.walnutlibrary.WalnutServo;
  */
 public class MasterLinear extends LinearOpMode {
     //Hardware
-    private DcMotor leftDriveMotor;
-    private DcMotor rightDriveMotor;
-    //Hardware
     private GoldConfig hardware;
+    //Assignment
     private DistanceMotor leftDrive;
     private DistanceMotor rightDrive;
     private DistanceDrive drive;
-    //Assignment
+    //Stepper
+    private AutoSections steps;
 
     public void initRobot(){
         hardware = new GoldConfig(this);
@@ -31,6 +30,7 @@ public class MasterLinear extends LinearOpMode {
         leftDrive = new DistanceMotor(hardware.leftMotor, "Left",true,false,4,1,1440);
         rightDrive = new DistanceMotor(hardware.rightMotor, "Right",true, true, 4,1,1440);
         drive = new DistanceDrive(leftDrive,rightDrive,17.5);
+        steps = AutoSections.POSITION1START;
     }
     @Override
     public void runOpMode(){
@@ -40,63 +40,45 @@ public class MasterLinear extends LinearOpMode {
             initRobot();
             telemetry.addData("Tests", "Robot Init'd");
             waitForStart();
+            boolean isDone = false;
+            while(!isDone && opModeIsActive()){
+                switch(steps){
+                    case POSITION1START:
+                        //@NOTE: This section is used for "priming" distance motor. It's kinda wierd
+                        //PLEASE DO NOT REMOVE IT FOR NOW
+                        //Thx :3
+                        //@TODO Is this needed, or was this my own mistake?
+                        telemetry.addData("Tests", "Finished First Test");
+                        leftDrive.operate(0);
+                        telemetry.addData("Tests", "Waiting for motor to prime");
+                        telemetry.addData("Left Mode", hardware.leftMotor.getMode());
+                        leftDrive.waitForCompletion();
 
-            //@NOTE: This section is used for "priming" distance motor. It's kinda wierd
-            //PLEASE DO NOT REMOVE IT FOR NOW
-            //Thx :3
-            //@TODO Is this needed, or was this my own mistake?
-            telemetry.addData("Tests", "Finished First Test");
-            leftDrive.operate(0);
-            telemetry.addData("Tests", "Waiting for motor to prime");
-            telemetry.addData("Left Mode", leftDriveMotor.getMode());
-            leftDrive.waitForCompletion();
+                        //^^^^DONT REMOVE THIS^^^^^//
 
-            //^^^^DONT REMOVE THIS^^^^^//
+                        telemetry.addData("Tests", "Starting Right Motor");
+                        rightDrive.operate(20);
+                        telemetry.addData("Tests", "Starting Left Motor");
+                        leftDrive.operate(20);
 
-            telemetry.addData("Tests", "Starting Right Motor");
-            rightDrive.operate(20);
-            telemetry.addData("Tests", "Starting Left Motor");
-            leftDrive.operate(20);
+                        leftDrive.waitForCompletion();
+                        rightDrive.waitForCompletion();
 
-            leftDrive.waitForCompletion();
-            rightDrive.waitForCompletion();
+                        rightDrive.operate(-20);
+                        leftDrive.operate(-20);
+                        leftDrive.waitForCompletion();
+                        rightDrive.waitForCompletion();
 
-            rightDrive.operate(-20);
-            leftDrive.operate(-20);
-            leftDrive.waitForCompletion();
-            rightDrive.waitForCompletion();
-
-            drive.linearDrive(30,1);
-            drive.waitForCompletion();
-            drive.tankTurn(90,1);
-            drive.waitForCompletion();
-
-
-
-
-            while(opModeIsActive()){
-                telemetry.addData("Left Power",leftDriveMotor.getPower());
-                telemetry.addData("Left Target", leftDriveMotor.getTargetPosition());
-                telemetry.addData("Left Pos", leftDriveMotor.getCurrentPosition());
-                telemetry.addData("Left Speed", leftDrive.getSpeedLimit());
-                telemetry.addData("Left Mode", leftDriveMotor.getMode());
-                telemetry.addData("Left Operates",leftDrive.operateCount);
-
-                telemetry.addData("Right Power",rightDriveMotor.getPower());
-                telemetry.addData("Right Target", rightDriveMotor.getTargetPosition());
-                telemetry.addData("Right Pos", rightDriveMotor.getCurrentPosition());
-                telemetry.addData("Right Speed",rightDrive.getSpeedLimit());
-                telemetry.addData("Right Mode", rightDriveMotor.getMode());
-                telemetry.addData("Right Operates", rightDrive.operateCount);
-
-                waitOneFullHardwareCycle();
+                        drive.linearDrive(30,1);
+                        drive.waitForCompletion();
+                        drive.tankTurn(90,1);
+                        drive.waitForCompletion();
+                        break;
+                    case MOVEOUT:
+                        isDone = true;
+                        break;
+                }
             }
-//            telemetry.addData("Tests", "Finished Second Test");
-//            sleep(2000);
-//            leftDrive.operate(-100);
-//            leftDrive.waitForCompletion();
-//            sleep(2000);
-            telemetry.addData("Tests", "Complete");
         }
         catch(InterruptedException e){
             hardware.stop();
