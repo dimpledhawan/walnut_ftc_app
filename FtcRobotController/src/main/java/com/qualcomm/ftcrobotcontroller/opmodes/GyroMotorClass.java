@@ -5,10 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
 
 /**
- * Created by dimpledhawan on 2/13/16.
+ * Created by dimpledhawan on 2/7/16.
  */
-public class GyroMotorClass
-{
+public class GyroMotorClass {
     private LinearOpMode opMode;
     private DcMotor left;
     private DcMotor right;
@@ -41,12 +40,12 @@ public class GyroMotorClass
         this.running = true;
             if (Direction.MOTOR_RIGHT.equals(direction))
             {
-                this.right.setPower(setPower);
+                this.right.setPower(power);
                 this.currMotor = Direction.MOTOR_RIGHT;
             }
             else
             {
-                this.left.setPower(setPower);
+                this.left.setPower(power);
                 this.currMotor = Direction.MOTOR_LEFT;
             }*/
 

@@ -18,7 +18,7 @@ public class Auto_redNear extends LinearOpMode
     private Servo hook;
     private Servo climber;
 
-    private GyroSensor gyro; //spins when robot starts somewhere else //NEEDS TO BE SCREWED IN!!!
+    private GyroSensor gyro;
 
     public void initialize() {
         motorLeft = hardwareMap.dcMotor.get("motorLeft");
@@ -28,7 +28,6 @@ public class Auto_redNear extends LinearOpMode
         gyro = hardwareMap.gyroSensor.get("gyro");
 
         gyro.calibrate();
-
         climber.setPosition(.75);
         //belt.setPosition(.5); //commented out but still initializing it!!
     }
@@ -50,7 +49,7 @@ public class Auto_redNear extends LinearOpMode
 
         if (!motorTaskLeft.isRunning()) {
             double targEnc = 1440 * 72 / 4 / Math.PI; //62.5
-            //full setPower , forward for 8880
+            //full power , forward for 8880
             motorTaskLeft.startMotor("step1 left", .5, targEnc, Direction.MOTOR_FORWARD);
         }
         if (!motorTaskRight.isRunning()) {
@@ -75,7 +74,6 @@ public class Auto_redNear extends LinearOpMode
         motorTaskLeft.startMotor("Name", 0.5, 1440, Direction.MOTOR_FORWARD);
         //motorRight.setPowerFloat(); //just added
         while(!motorTaskLeft.targetReached()){
-
         }
 
         motorLeft.setPower(0);
@@ -83,7 +81,7 @@ public class Auto_redNear extends LinearOpMode
 
         if (!motorTaskLeft.isRunning()) {
             double targEnc = 1440 * 12 / 4 / Math.PI;
-            //full setPower , forward for 8880
+            //full power , forward for 8880
             motorTaskLeft.startMotor("step1 left", 0.5, targEnc, Direction.MOTOR_FORWARD);
         }
         if (!motorTaskRight.isRunning()) {
@@ -111,7 +109,7 @@ public class Auto_redNear extends LinearOpMode
 
         if (!motorTaskLeft.isRunning()) {
             double targEnc = 1440 * 29 / 4 / Math.PI;
-            //full setPower , forward for 8880
+            //full power , forward for 8880
             motorTaskLeft.startMotor("step1 left", 1, targEnc, Direction.MOTOR_FORWARD);
         }
         if (!motorTaskRight.isRunning()) {
@@ -127,6 +125,7 @@ public class Auto_redNear extends LinearOpMode
         }
         //inLoopss = false;
         //telemetry.addData("In Loop", inLoopss);
+
         motorRight.setPower(0);
         motorLeft.setPower(0);
         motorTaskLeft.stop();

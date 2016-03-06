@@ -72,7 +72,6 @@ public class EncoderMotorTask
 
         resetEncoder();
         waitForEncoderToReset();
-
     }
 
     public boolean isRunning()

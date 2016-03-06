@@ -17,8 +17,9 @@ public class Tele_Test extends OpMode
     private DcMotor slideRight;
 
     private Servo belt;
-    private Servo doors;
+    //private Servo doors;
     private Servo hook;
+    private Servo hook2;
     private Servo climber;
 
     @Override
@@ -35,14 +36,16 @@ public class Tele_Test extends OpMode
         slideRight.setDirection(DcMotor.Direction.REVERSE);
 
         belt = hardwareMap.servo.get("belt");
-        doors = hardwareMap.servo.get("doors");
+        //doors = hardwareMap.servo.get("doors");
         hook = hardwareMap.servo.get("hook");
+        hook2 = hardwareMap.servo.get("hook2");
         climber = hardwareMap.servo.get("climber");
 
         //belt.setPosition(0.5);
-        doors.setPosition(0.5);
-        hook.setPosition(0.5);
-        climber.setPosition(.42);
+        //doors.setPosition(0.5);
+        hook.setPosition(0.25);
+        hook2.setPosition(0.75);
+        climber.setPosition(.75);
     }
 
     /*
@@ -91,27 +94,22 @@ public class Tele_Test extends OpMode
         else if (gamepad2.b)
             spinners.setPower(1); //reaching
         else if (gamepad2.y)
-            spinners.setPower(0); //Y not working. Reaching? YES!
+            spinners.setPower(0); //Why not working. Reaching? YES! Y button wasn't working.
 
-        if (Math.abs(gamepad1.left_trigger) > 0.05)
-            hook.setPosition(.9);
-        else
-            hook.setPosition(.5);
+        if (gamepad1.left_bumper)
+            climber.setPosition(.18);
+        else if (gamepad1.right_bumper)
+            climber.setPosition(.42);
 
-        if (Math.abs(gamepad1.right_trigger) > 0.05)
-            hook.setPosition(1);
-        else
-            hook.setPosition(.5);
+        if (Math.abs(gamepad1.left_trigger) > 0.05) {
+            hook.setPosition(Servo.MIN_POSITION+.25);
+            hook2.setPosition(Servo.MAX_POSITION-.4);
+        }
 
-        if(gamepad2.left_bumper)
-            doors.setPosition(.9);
-        else
-            doors.setPosition(.5);
-
-        if(gamepad2.right_bumper)
-            doors.setPosition(.1);
-        else
-            doors.setPosition(.5);
+        if (Math.abs(gamepad1.right_trigger) > 0.05) {
+            hook.setPosition(Servo.MAX_POSITION);
+            hook2.setPosition(Servo.MIN_POSITION);
+        }
 
         belt.setPosition((gamepad2.right_stick_x + 1.0) / 2.0); //gamepad1 buttons work exactly same on gamepad2
 

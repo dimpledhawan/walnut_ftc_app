@@ -45,8 +45,7 @@ public class FtcOpModeRegister implements OpModeRegister {
    *
    * @param manager op mode manager
    */
-  public void register(OpModeManager manager)
-  {
+  public void register(OpModeManager manager) {
 
     /*
      * register your op modes here.
@@ -56,16 +55,53 @@ public class FtcOpModeRegister implements OpModeRegister {
      * If two or more op modes are registered with the same name, the app will display an error.
      */
 
-    //manager.register("TeleOp", Tele_Test.class);
+    //manager.register("NullOp", NullOp.class);
 
-    //manager.register("Auto_redNear", Auto_redNear.class); //dumps climbers and gets out of alliance partner's way to score
-    //manager.register("Auto_redNear_stay", Auto_redNear_stay.class); //dumps climbers and parks in floor goal
-    //manager.register("Auto_redNear_wait_stay", Auto_redNear_wait_stay.class); //waits for 10 sec, drops climbers, and parks in floor goal
+    //manager.register("K9TeleOp", K9TeleOp.class);
+    //manager.register ("PushBotAuto", PushBotAuto.class);
+    //manager.register ("PushBotManual", PushBotManual.class);
+    manager.register("DrivetrainOp", LucasRomier_4602_DrivetrainOp.class);
+    //manager.register("Lucas_Romier_DriveTrain_6976_Op", Lucas_Romier_DriveTrain_6976_Op.class);
+    manager.register("Autonomous Red Left", LucasRomier_4602_Autonomous_DrivetrainOp_Red_Left.class);
+    manager.register("Autonomous Red Right", LucasRomier_4602_Autonomous_DrivetrainOp_Red_Right.class);
+    manager.register("Autonomous Blue Left", LucasRomier_4602_Autonomous_DrivetrainOp_Blue_Left.class);
+    manager.register("Autonomous Blue Right", LucasRomier_4602_Autonomous_DrivetrainOp_Blue_Right.class);
+    //manager.register("TestMode", TestMode.class);
 
-    //manager.register("Auto_blueNear", Auto_blueNear.class);
-    //manager.register("Auto_blueNear_stay", Auto_blueNear_stay.class);
-    //manager.register("Auto_blueNear_wait_stay", Auto_blueNear_wait_stay.class);
-    manager.register("Walnut Tele",MasterTeleOp.class);
-    manager.register("Linear Tests", MasterLinear.class);
+    /*
+     * Uncomment any of the following lines if you want to register an op mode.
+     */
+
+    //manager.register("AdafruitRGBExample", AdafruitRGBExample.class);
+    //manager.register("MRRGBExample", MRRGBExample.class);
+    //manager.register("ColorSensorDriver", ColorSensorDriver.class);
+    //manager.register("HTRGBExample", HTRGBExample.class);
+
+    //manager.register("IrSeekerOp", IrSeekerOp.class);
+    //manager.register("CompassCalibration", CompassCalibration.class);
+    //manager.register("I2cAddressChangeExample", LinearI2cAddressChange.class);
+
+
+    //manager.register("NxtTeleOp", NxtTeleOp.class);
+    
+    //manager.register("LinearK9TeleOp", LinearK9TeleOp.class);
+    //manager.register("LinearIrExample", LinearIrExample.class);
+
+    
+    //manager.register ("PushBotManual1", PushBotManual1.class);
+    //manager.register ("PushBotAutoSensors", PushBotAutoSensors.class);
+    //manager.register ("PushBotIrEvent", PushBotIrEvent.class);
+    
+    //manager.register ("PushBotManualSensors", PushBotManualSensors.class);
+    //manager.register ("PushBotOdsDetectEvent", PushBotOdsDetectEvent.class);
+    //manager.register ("PushBotOdsFollowEvent", PushBotOdsFollowEvent.class);
+    //manager.register ("PushBotTouchEvent", PushBotTouchEvent.class);    
+    
+    //manager.register("PushBotDriveTouch", PushBotDriveTouch.class);
+    //manager.register("PushBotIrSeek", PushBotIrSeek.class);
+    //manager.register("PushBotSquare", PushBotSquare.class);
+
+    
+    
   }
 }
