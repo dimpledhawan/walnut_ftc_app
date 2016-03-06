@@ -5,7 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.walnuthillseagles.walnutlibrary.*;
 import com.walnuthillseagles.walnutlibrary.WalnutServo;
-
+/**
+ * Created by dimpledhawan on 2/27/16.
+ */
 public class MasterTeleOp extends OpMode{
     //Hardware
     private GoldConfig hardware;
@@ -22,9 +24,12 @@ public class MasterTeleOp extends OpMode{
     private WalnutServo climber;
     private WalnutServo door;
     private WalnutServo hook;
+    private WalnutServo hook2;
     //Control Scheme
     ControlScheme buttons;
+    @Override
     public void init(){
+        telemetry.addData("DEBUG", "STARTING INIT");
         //Init Hardware
         hardware=new GoldConfig(this);
         //Create Assignment
@@ -46,12 +51,18 @@ public class MasterTeleOp extends OpMode{
         //@TODO Figure out how Servos want to be used
         belt = new ContinuousServo(hardware.beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
 
-        hook = new WalnutServo(hardware.hookServo,0,true);
-        hook.addButton("LBUMP1",1);
-        hook.addButton("RBUMP1",0);
+        double hook1StartPos = Servo.MIN_POSITION+.25;
+        hook = new WalnutServo(hardware.hookServo,hook1StartPos,true);
+        hook.addButton("LBUMP1",hook1StartPos);
+        hook.addButton("RBUMP1",1);
 
-        climber = new WalnutServo(hardware.climberServo,0.8,true);
-        climber.addButton("X2",0.5);
+        double hook2StartPos = Servo.MAX_POSITION-.4;
+        hook2 = new WalnutServo(hardware.hook2Servo,hook2StartPos,true);
+        hook2.addButton("LBUMP1",hook2StartPos);
+        hook2.addButton("RBUMP1",0);
+
+        climber = new WalnutServo(hardware.climberServo,0.7,true);
+        climber.addButton("X2",0.3);
 
         /*
         hook = new WalnutServo(hookServo, 0, "RBUMP1", 0, true);
@@ -60,23 +71,29 @@ public class MasterTeleOp extends OpMode{
         buttons = new ControlScheme();
         buttons.add(leftDrive);
         buttons.add(rightDrive);
-        //Uncomment these lines when all objects made
 
+        //Disabled on 03/06/16 because of stringing issues
         buttons.add(slideLeft);
-        buttons.add(spinner);
         buttons.add(slideRight);
+        buttons.add(spinner);
 
         buttons.add(belt);
         //buttons.add(door);
         buttons.add(climber);
         buttons.add(hook);
+        buttons.add(hook2);
+        telemetry.addData("DEBUG","FINISHED INIT");
     }
+    @Override
     public void start(){
-    VirtualGamepad.startProcessing(this);
+        telemetry.addData("DEBUG", "MADE IT TO START");
+        VirtualGamepad.startProcessing(this);
     }
+    @Override
     public void loop(){
     buttons.operate();
     }
+    @Override
     public void stop(){
     buttons.stop();
     }

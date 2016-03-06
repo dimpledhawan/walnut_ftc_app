@@ -14,7 +14,6 @@ public class DistanceDrive {
     //Just cause
     public static final int REVERSEORIENTATION = -1;
 
-    public static final double MOTORADJUSTMENTPOW = 0.8;
     //Constructor used for first two motors
     public DistanceDrive(DistanceMotor myLeft, DistanceMotor myRight, double width){
         //Initilize ArrayLists
@@ -39,13 +38,49 @@ public class DistanceDrive {
         operateMotors(leftDrive,inches,pow);
         operateMotors(rightDrive, inches, pow);
     }
-    //Left is positive, right is negetive
+    //Right is positive, left is negetive
     public void tankTurn(double degrees, double pow){
-        double factor = 360/degrees;
-        double distance = (Math.PI * robotWidth)/factor;
-        //One is inverted to create a tank turn
-        operateMotors(leftDrive,distance,pow);
-        operateMotors(rightDrive, distance * REVERSEORIENTATION, pow * REVERSEORIENTATION);
+        if(degrees != 0){
+            double factor = 360/degrees;
+            double distance = (Math.PI * robotWidth)/factor;
+            //One is inverted to create a tank turn
+            operateMotors(leftDrive,distance,pow);
+            operateMotors(rightDrive, distance * REVERSEORIENTATION, pow * REVERSEORIENTATION);
+        }
+
+    }
+    public void tankTurn(double degrees){
+        tankTurn(degrees, 1);
+    }
+
+    public void pivotTurn(double degrees, double pow){
+        if(degrees!=0){
+            double factor = 360/degrees;
+            double distance =  (Math.PI * robotWidth * 2)/factor;
+
+            if(pow>0){
+                if(degrees>0)
+                    operateMotors(leftDrive,distance,pow);
+                else
+                    operateMotors(rightDrive,distance,pow);
+
+            }
+            else //if(pow<0)
+            {
+                if(degrees>0)
+                    operateMotors(rightDrive,-distance,pow);
+                else
+                    operateMotors(leftDrive,-distance,pow);
+            }
+        }
+
+    }
+    public void forwardPivotTurn(double degrees){
+        pivotTurn(degrees,1);
+    }
+
+    public void backwardsPivotTurn(double degrees){
+        pivotTurn(degrees,-1);
     }
     public void stop(){
         for(int i=0;i<leftDrive.size();i++)

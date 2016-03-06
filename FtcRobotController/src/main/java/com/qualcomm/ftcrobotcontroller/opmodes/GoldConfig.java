@@ -16,17 +16,21 @@ public class GoldConfig {
     //Other
     public DcMotor spinMotor;
     //@NOTE: Motor is Y Split
+
     public DcMotor slideLeftMotor;
     public DcMotor slideRightMotor;
 
     public Servo climberServo;
     public Servo beltServo;
     public Servo hookServo;
+    public Servo hook2Servo;
 
-    //public GyroSensor gyro;
+    public GyroSensor gyro;
     public GoldConfig(OpMode currentOp){
+        //Get Hardware
         rightMotor = currentOp.hardwareMap.dcMotor.get("motorRight");
         leftMotor = currentOp.hardwareMap.dcMotor.get("motorLeft");
+
         slideLeftMotor = currentOp.hardwareMap.dcMotor.get("slideLeft");
         slideRightMotor = currentOp.hardwareMap.dcMotor.get("slideRight");
 
@@ -35,11 +39,30 @@ public class GoldConfig {
         beltServo = currentOp.hardwareMap.servo.get("belt");
         climberServo = currentOp.hardwareMap.servo.get("climber");
         hookServo = currentOp.hardwareMap.servo.get("hook");
+        hook2Servo = currentOp.hardwareMap.servo.get("hook2");
+
+
+
+        gyro = currentOp.hardwareMap.gyroSensor.get("gyro");
+        gyro.calibrate();
+        currentOp.telemetry.addData("Tests","Made it past calibration");
+        //@TODO Gets stuck in loop?
+//        boolean notInterrupted = true;
+//        while(gyro.isCalibrating() && notInterrupted){
+//            try{
+//                Thread.sleep(200);
+//            }
+//            catch(InterruptedException e){
+//                Thread.currentThread().interrupt();
+//                notInterrupted = false;
+//            }
+//        }
     }
     public void stop(){
         rightMotor.setPower(0);
         leftMotor.setPower(0);
         spinMotor.setPower(0);
+
         slideLeftMotor.setPower(0);
         slideRightMotor.setPower(0);
 

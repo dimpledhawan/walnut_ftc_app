@@ -9,7 +9,7 @@ public class Auto_redNear_Test extends LinearOpMode
 {
     public void runOpMode()
     {
-        Master_Autonomous Auto_redNear_Test = new Master_Autonomous("red", "near", 10, "true");
+        //Master_Autonomous Auto_redNear_Test = new Master_Autonomous("red", "near", 10, "true");
     }
 
 }
