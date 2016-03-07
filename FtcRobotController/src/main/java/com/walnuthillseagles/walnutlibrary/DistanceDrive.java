@@ -55,7 +55,7 @@ public class DistanceDrive {
 
     public void pivotTurn(double degrees, double pow){
         if(degrees!=0){
-            double factor = 360/degrees;
+            double factor = Math.abs(360/degrees);
             double distance =  (Math.PI * robotWidth * 2)/factor;
 
             if(pow>0){
