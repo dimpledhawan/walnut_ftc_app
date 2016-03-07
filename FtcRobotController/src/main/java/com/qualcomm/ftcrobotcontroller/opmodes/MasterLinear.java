@@ -36,6 +36,7 @@ public class MasterLinear {
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
         helperOp = myOp;
+        initRobot();
     }
 
     public void initRobot(){
@@ -53,6 +54,7 @@ public class MasterLinear {
         rightDrive = new DistanceMotor(hardware.rightMotor, "Right",true, true, 4,1,1440);
         drive = new DistanceDrive(leftDrive,rightDrive,17);
         steps = AutoSections.POSITION1START;
+        helperOp.telemetry.addData("Tests", "Software Init'd");
     }
 
     @Override
