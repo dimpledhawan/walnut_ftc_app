@@ -129,5 +129,39 @@ public class VirtualGamepad implements Runnable{
         updater.setGamepads(myOpmode.gamepad1, myOpmode.gamepad2);
         processor.start();
     }
+    public static void getDoubleTableVal(int index){
+        switch(index){
+//-----------------GamePad1-------------------------//
+            case(0):
+                return gamepad1Pointer.left_stick_x;
+            case(1):
+                return gamepad1Pointer.left_stick_y;
+            case(2):
+                return 
+            case(3):    
+                return gamepad1Pointer.right_stick_x;
+            case(4):
+                return gamepad1Pointer.right_stick_y;
+            case(5):
+                return gamepad1Pointer.left_trigger;
+            case(6):
+                return gamepad1Pointer.right_trigger;
+//-----------------GamePad2-------------------------//
+            case(7):
+                return gamepad2Pointer.left_stick_x;
+            case(8):
+                return gamepad2Pointer.left_stick_y;
+            case(9):
+                return gamepad2Pointer.right_stick_x;
+            case(10):
+                return gamepad2Pointer.right_stick_y;
+            case(11):
+                return gamepad2Pointer.left_trigger;
+            case(12):
+                return gamepad2Pointer.right_trigger;
+            default:
+                return 0;
+        }
+    }
 
 }
