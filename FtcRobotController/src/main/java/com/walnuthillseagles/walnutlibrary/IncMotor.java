@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Created by Yan Vologzhanin on 1/2/2016.
  */
 public class IncMotor extends TeleMotor implements Drivable{
-    private AnalogValues tableConstant;
     private int tablePos;
     //Used if you need to reverse orientation
     private double orientation;
@@ -18,8 +17,6 @@ public class IncMotor extends TeleMotor implements Drivable{
         super(myMotor,myName, checkEncoders);
         //Assign Table Position
         String nonCaseSensetive = myControl.toUpperCase();
-        //@TODO Do I Need this field?
-        tableConstant = AnalogValues.valueOf(nonCaseSensetive);
         setTable(AnalogValues.valueOf(nonCaseSensetive));
         if(reverse)
             orientation = -1;

@@ -27,7 +27,7 @@ public class DigMotor extends TeleMotor implements Drivable{
         isToggle=myToggle;
     }
     public void addButton(String button, double power){
-        Buttons.add(new ButtonEvent(button, power, true));
+        Buttons.add(new ButtonEvent(button, power));
     }
     //Teleop Methods
     public void operate(){
@@ -35,7 +35,7 @@ public class DigMotor extends TeleMotor implements Drivable{
         for(int i = 0;i<Buttons.size();i++){
             temp = Buttons.get(i);
             if(VirtualGamepad.boolValues[temp.getPos()]){
-                this.setPower(temp.getPow());
+                this.setPower(temp.getVal());
             }
             else if(!isToggle&&!VirtualGamepad.boolValues[temp.getPos()]){
                 this.fullStop();

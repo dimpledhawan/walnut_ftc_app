@@ -65,6 +65,7 @@ public abstract class MasterLinear_Test extends LinearOpMode {
 //            EncoderMotorTask motorTaskRight = new EncoderMotorTask(this, motorRight);
 //            GyroMotorClass gyroTurn = new GyroMotorClass(this, gyro, motorLeft, motorRight);
 //
+    //@TODO I had code get stuck trying to do this. Watch out
 //            while (gyro.isCalibrating()) {
 //                try {
 //                    sleep(50);
@@ -116,58 +117,5 @@ public abstract class MasterLinear_Test extends LinearOpMode {
 //        } catch (InterruptedException e) {
 //            stop();
 //        }
-//    }
-//
-//    private void dumpClimbers() throws InterruptedException {
-//        climber.setPosition(.18);
-//        sleep(1000);
-//        climber.setPosition(.42);
-//        sleep(1000);
-//    }
-//
-//    private void moveForward(double power, Direction leftOrientation, Direction rightOrientation, double distance) throws InterruptedException {
-//        double targEnc1 = 1440 * distance / 4 / Math.PI;
-//        if (!motorTaskLeft.isRunning()) {
-//            motorTaskLeft.startMotor("step1 left", power, targEnc1, leftOrientation);
-//        }
-//        if (!motorTaskRight.isRunning()) {
-//            motorTaskRight.startMotor("step1 right", power, targEnc1, rightOrientation);
-//        }
-//
-//        while (!(motorTaskLeft.targetReached() && motorTaskRight.targetReached())) {
-//
-//        }
-//
-//        stopRobot();
-//    }
-//
-//    private void Turn(EncoderMotorTask motorTask, DcMotor motor, int angle) {
-//        double targEnc = 1440 * angle / 360 * 36 / 4 / Math.PI;
-//        try {
-//            motorTask.startMotor("Name", 0.5, targEnc, Direction.MOTOR_BACKWARD);
-//
-//            while (!motorTask.targetReached()) {
-//
-//            }
-//
-//            motor.setPower(0);
-//            motorTask.stop();
-//        } catch (InterruptedException e) {
-//            stop();
-//        }
-//    }
-//
-//    public void stopRobot() {
-//
-//        try {
-//            motorRight.setPower(0);
-//            motorLeft.setPower(0);
-//            motorTaskLeft.stop();
-//            motorTaskRight.stop();
-//            spinners.setPower(0);
-//        } catch (InterruptedException e) {
-//
-//        }
-//
 //    }
 }

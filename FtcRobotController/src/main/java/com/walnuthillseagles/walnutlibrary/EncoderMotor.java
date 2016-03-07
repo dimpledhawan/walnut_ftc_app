@@ -27,7 +27,6 @@ public class EncoderMotor extends LinearMotor implements Runnable, Auto{
         runner = new Thread();
     }
     public void operate(double inches, double mySpeedLimit){
-        //@TODO Does this handle Going backwards?
         distance = (int)((inches / circumference / gearRatio) * encoderRot * orientation);
         speedLimit = mySpeedLimit;
         //Start new process

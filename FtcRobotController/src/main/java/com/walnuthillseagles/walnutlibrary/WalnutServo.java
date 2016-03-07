@@ -23,7 +23,7 @@ public class WalnutServo implements Drivable, Auto {
     }
 
     public void addButton(String daButton, double myPos){
-        ButtonEvent newButton = new ButtonEvent(daButton, myPos, true);
+        ButtonEvent newButton = new ButtonEvent(daButton, myPos);
         buttons.add(newButton);
     }
     public void operate(){
@@ -32,7 +32,7 @@ public class WalnutServo implements Drivable, Auto {
             temp = buttons.get(i);
             if(VirtualGamepad.boolValues[temp.getPos()]){
                 //@TODO Change method name here to make more sense
-                servo.setPosition(temp.getPow());
+                servo.setPosition(temp.getVal());
             }
             else if(!isToggle&&!VirtualGamepad.boolValues[temp.getPos()]){
                 this.stop();

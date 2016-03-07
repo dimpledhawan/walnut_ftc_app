@@ -27,11 +27,13 @@ public class MasterLinear {
     private int startPos;
     private long delay;
     private boolean willPark;
+    private int orientation;
     private LinearOpMode helperOp;
     
     public MasterLinear(String myAlliance, int myStart,
                         double myDelay, boolean parkCheck,LinearOpMode myOp){
-        alliance = myAlliance;
+        alliance = myAlliance.toUpperCase();
+        orientation = alliance.equals("RED") ? 1:-1;
         startPos=myStart;
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
@@ -57,7 +59,6 @@ public class MasterLinear {
         helperOp.telemetry.addData("Tests", "Software Init'd");
     }
 
-    @Override
     public void execute(){
         helperOp.telemetry.addData("Tests","Made it past Start");
         try{
@@ -68,37 +69,48 @@ public class MasterLinear {
                 switch(steps){
                     case STARTINGDELAY:
                         if(delay > 0)
-                            this.sleep(delay);
-                        steps = AutoSections.POSITION1START;
+                            helperOp.sleep(delay);
+                        if(startPos == 1)
+                            steps = AutoSections.POSITION1START;
+                        else
+                            steps = AutoSections.POSITION2START;
                     case POSITION1START:
-                        drive.backwardsPivotTurn(90);
-                        drive.waitForCompletion();
-                        drive.backwardsPivotTurn(-90);
-                        drive.waitForCompletion();
-                        drive.forwardPivotTurn(90);
-                        drive.waitForCompletion();
-                        drive.forwardPivotTurn(-90);
-                        drive.waitForCompletion();
+                        //Turn on Spinners
+                        hardware.spinMotor.setPower(1);
 
+                        //Move to position
+                        drive.linearDrive(72*orientation, 0.5);
+                        drive.waitForCompletion();
+                        drive.backwardPivotTurn(40*orientation, 0.5);
+                        drive.waitForCompletion();
+                        drive.linearDrive(12*orientation,0.5);
+
+                        //Turn off Spinners
+                        hardware.spinMotor.setPower(0);
+
+                        steps = AutoSections.DEPLOYCLIMBERS;
+                    case DEPLOYCLIMBERS:
+                        hardware.climberServo.setPosition(.18);
+                        helperOp.sleep(1000);
+                        hardware.climberServo.setPosition(.47);
+                        helperOp.sleep(1000);
                         steps = AutoSections.MOVEOUT;
-                        break;
                     case MOVEOUT:
                         //Extra code
                         if(!willPark){
-                            //@TODO Add unpark code here
-                            sleep(50);
+                            drive.linearDrive(orientation*29,0.5);
                         }
                         isDone = true;
                         break;
                 }
-                waitOneFullHardwareCycle();
+                helperOp.waitOneFullHardwareCycle();
             }
         }
         catch(InterruptedException e){
             hardware.stop();
             Thread.currentThread().interrupt();
         }
-        telemetry.addData("Tests","Done");
+        helperOp.telemetry.addData("Tests","Done");
 
     }
 }

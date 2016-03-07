@@ -38,17 +38,16 @@ public class TimedMotor extends LinearMotor implements Runnable, Auto {
     public void run(){
         this.setPower(speedLimit);
         try{
-            timer.sleep(numMSecs);
+            synchronized (this){
+                this.wait(numMSecs);
+            }
         }
         catch(InterruptedException e){
-            //@TODO: Overkill?
-            fullStop();
             Thread.currentThread().interrupt();
         }
         finally {
             fullStop();
         }
-        fullStop();
     }
     public void waitForCompletion() throws InterruptedException{
         runner.join();

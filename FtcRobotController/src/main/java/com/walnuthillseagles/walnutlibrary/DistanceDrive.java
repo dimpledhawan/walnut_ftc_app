@@ -7,9 +7,9 @@ import java.util.ArrayList;
  */
 
 public class DistanceDrive {
-    private ArrayList<DistanceMotor> leftDrive;
-    private ArrayList<DistanceMotor> rightDrive;
-    private double robotWidth;
+    protected DistanceMotor leftDrive;
+    protected DistanceMotor rightDrive;
+    protected double robotWidth;
 
     //Just cause
     public static final int REVERSEORIENTATION = -1;
@@ -17,26 +17,21 @@ public class DistanceDrive {
     //Constructor used for first two motors
     public DistanceDrive(DistanceMotor myLeft, DistanceMotor myRight, double width){
         //Initilize ArrayLists
-        leftDrive = new ArrayList<DistanceMotor>();
-        rightDrive = new ArrayList<DistanceMotor>();
-        //Add motors to these lists
-        leftDrive.add(myLeft);
-        rightDrive.add(myRight);
+        leftDrive = myLeft;
+        rightDrive = myRight;
         //Initilize other variables
         robotWidth = width;
     }
-    //Add additional motors
-    public void addLeft(DistanceMotor myLeft){
-        leftDrive.add(myLeft);
-    }
-    public void addRight(DistanceMotor myRight){
-        rightDrive.add(myRight);
-    }
+
     //Autonomous Methods
     public void linearDrive(double inches, double pow){
         //Tell motors to start
-        operateMotors(leftDrive,inches,pow);
-        operateMotors(rightDrive, inches, pow);
+        leftDrive.operate(inches,pow);
+        rightDrive.operate(inches, pow);
+    }
+
+    public void linearDrive(double inches){
+        linearDrive(inches, 1);
     }
     //Right is positive, left is negetive
     public void tankTurn(double degrees, double pow){
@@ -44,8 +39,8 @@ public class DistanceDrive {
             double factor = 360/degrees;
             double distance = (Math.PI * robotWidth)/factor;
             //One is inverted to create a tank turn
-            operateMotors(leftDrive,distance,pow);
-            operateMotors(rightDrive, distance * REVERSEORIENTATION, pow * REVERSEORIENTATION);
+            leftDrive.operate(distance,pow);
+            rightDrive.operate(distance * REVERSEORIENTATION, pow * REVERSEORIENTATION);
         }
 
     }
@@ -60,52 +55,45 @@ public class DistanceDrive {
 
             if(pow>0){
                 if(degrees>0)
-                    operateMotors(leftDrive,distance,pow);
+                    leftDrive.operate(distance,pow);
                 else
-                    operateMotors(rightDrive,distance,pow);
+                    rightDrive.operate(distance,pow);
 
             }
             else //if(pow<0)
             {
                 if(degrees>0)
-                    operateMotors(rightDrive,-distance,pow);
+                    rightDrive.operate(-distance,pow);
                 else
-                    operateMotors(leftDrive,-distance,pow);
+                    leftDrive.operate(-distance,pow);
             }
         }
 
     }
     public void forwardPivotTurn(double degrees){
-        pivotTurn(degrees,1);
+        forwardPivotTurn(degrees,1);
+    }
+    public void forwardPivotTurn(double degrees, double pow){ pivotTurn(degrees, Math.abs(pow));
     }
 
     public void backwardsPivotTurn(double degrees){
-        pivotTurn(degrees,-1);
+        backwardPivotTurn(degrees,-1);
     }
+
+    public void backwardPivotTurn(double degrees, double pow){pivotTurn(degrees, -Math.abs(pow));}
     public void stop(){
-        for(int i=0;i<leftDrive.size();i++)
-            leftDrive.get(i).stop();
-        for(int i=0;i<rightDrive.size();i++)
-            rightDrive.get(i).stop();
+        leftDrive.stop();
+        rightDrive.stop();
     }
     public void fullStop(){
-        for(int i=0;i<leftDrive.size();i++)
-            leftDrive.get(i).fullStop();
-        for(int i=0;i<rightDrive.size();i++)
-            rightDrive.get(i).fullStop();
+        leftDrive.fullStop();
+        rightDrive.fullStop();
     }
     
     //Timers
     public void waitForCompletion() throws InterruptedException{
-        for(int i=0;i<leftDrive.size();i++)
-            leftDrive.get(i).waitForCompletion();
-        for(int i=0;i<rightDrive.size();i++)
-            rightDrive.get(i).waitForCompletion();
+        leftDrive.waitForCompletion();
+        rightDrive.waitForCompletion();
     }
     //Helpper Private methods
-    private void operateMotors(ArrayList<DistanceMotor> myMotors, double distance, double pow){
-        for(int i=0;i<myMotors.size();i++){
-            myMotors.get(i).operate(distance,pow);
-        }
-    }
 }

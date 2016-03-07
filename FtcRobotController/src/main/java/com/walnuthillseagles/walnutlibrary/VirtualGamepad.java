@@ -130,7 +130,8 @@ public class VirtualGamepad implements Runnable{
         processor.start();
     }
     //@TODO Figure out how to handle default Case
-    public static void getDoubleTableVal(int index){
+    //@TODO Figure out how to handle nonstatic context
+    public double getDoubleTableVal(int index){
         switch(index){
 //-----------------GamePad1-------------------------//
             case(0):
@@ -138,27 +139,25 @@ public class VirtualGamepad implements Runnable{
             case(1):
                 return gamepad1Pointer.left_stick_y;
             case(2):
-                return 
-            case(3):    
                 return gamepad1Pointer.right_stick_x;
-            case(4):
+            case(3):
                 return gamepad1Pointer.right_stick_y;
-            case(5):
+            case(4):
                 return gamepad1Pointer.left_trigger;
-            case(6):
+            case(5):
                 return gamepad1Pointer.right_trigger;
 //-----------------GamePad2-------------------------//
-            case(7):
+            case(6):
                 return gamepad2Pointer.left_stick_x;
-            case(8):
+            case(7):
                 return gamepad2Pointer.left_stick_y;
-            case(9):
+            case(8):
                 return gamepad2Pointer.right_stick_x;
-            case(10):
+            case(9):
                 return gamepad2Pointer.right_stick_y;
-            case(11):
+            case(10):
                 return gamepad2Pointer.left_trigger;
-            case(12):
+            case(11):
                 return gamepad2Pointer.right_trigger;
             default:
                 return 0;

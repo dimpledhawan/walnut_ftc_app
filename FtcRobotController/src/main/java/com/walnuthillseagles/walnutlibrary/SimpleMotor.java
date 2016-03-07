@@ -31,14 +31,13 @@ public class SimpleMotor {
         name = myName;
         if(encoderCheck){
             hasEncoders = true;
-            //@TODO Can this be handled better?
             try{
                 resetEncoder();
             }
             catch (InterruptedException e){
                 Thread.currentThread().interrupt();
             }
-            motor.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+
         }
         else{
             hasEncoders = false;
@@ -50,10 +49,7 @@ public class SimpleMotor {
     public DcMotor getMotor(){
         return motor;
     }
-    //@TODO Do I need this?
-    public boolean checkEncoders(){
-        return hasEncoders;
-    }
+
     @Override
     public String toString(){
         return this.name;

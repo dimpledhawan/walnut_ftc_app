@@ -5,7 +5,7 @@ package com.walnuthillseagles.walnutlibrary;
  */
 public class ButtonEvent {
     private int tablePos;
-    private double pow;
+    private double val;
     private boolean isToggle;
     public enum digValues{
         A1, B1, X1, Y1, BACK1, START1, GUIDE1, LEFT1,RIGHT1,
@@ -15,22 +15,17 @@ public class ButtonEvent {
     }
 
     //Construcor
-    public ButtonEvent(String daButton, double myPow){
+    public ButtonEvent(String daButton, double myVal){
         //Get table position from noncase sensitive button name
         tablePos = findTablePos(digValues.valueOf(daButton.toUpperCase()));
-        pow = myPow;
+        val = myVal;
         //Congradulatiionsns, you found a secret :D
         isToggle = true;
     }
-    public ButtonEvent(String daButton, double myPow, boolean Toggle){
-        //Get table position from noncase sensitive button name
-        tablePos = findTablePos(digValues.valueOf(daButton.toUpperCase()));
-        pow = myPow;
-        isToggle = Toggle;
-    }
+
     //Getters
-    public double getPow(){
-        return pow;
+    public double getVal(){
+        return val;
     }
     public boolean checkToggle(){
         return isToggle;

@@ -53,13 +53,11 @@ public class DistanceMotor extends LinearMotor implements Runnable, Auto {
         runner = new Thread();
 
         operateCount = 0;
-        //"Prime" Motor
-        //@TODO Figure out how to do this for user
 
     }
     //Starts operation with given parameters
     public void operate(double inches, double mySpeedLimit){
-        //@TODO Does this handle Going backwards?
+
         distance = (int)((inches / circumference / gearRatio) * encoderRot * orientation);
         //Speedlimit is always positive
         speedLimit = Math.abs(mySpeedLimit);
