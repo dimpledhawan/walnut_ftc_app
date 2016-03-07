@@ -129,6 +129,7 @@ public class VirtualGamepad implements Runnable{
         updater.setGamepads(myOpmode.gamepad1, myOpmode.gamepad2);
         processor.start();
     }
+    //@TODO Figure out how to handle default Case
     public static void getDoubleTableVal(int index){
         switch(index){
 //-----------------GamePad1-------------------------//
@@ -161,6 +162,74 @@ public class VirtualGamepad implements Runnable{
                 return gamepad2Pointer.right_trigger;
             default:
                 return 0;
+        }
+    }
+    public boolean getBoolValue(int index){
+        switch(index){
+            //----GamePad1---//
+            case(0):
+                return gamepad1Pointer.a;
+            case(1):
+                return gamepad1Pointer.b;
+            case(2):
+                return gamepad1Pointer.x;
+            case(3):
+                return gamepad1Pointer.y;
+            case(4):
+                return gamepad1Pointer.back;
+            case(5):
+                return gamepad1Pointer.start;
+            case(6):
+                return gamepad1Pointer.guide;
+            case(7):
+                return gamepad1Pointer.dpad_left;
+            case(8):
+                return gamepad1Pointer.dpad_right;
+            case(9):
+                return gamepad1Pointer.dpad_down;
+            case(10):
+                return gamepad1Pointer.dpad_up;
+            case(11):
+                return gamepad1Pointer.left_bumper;
+            case(12):
+                return gamepad1Pointer.right_bumper;
+            case(13):
+                return gamepad1Pointer.left_stick_button;
+            case(14):
+                return gamepad1Pointer.right_stick_button;
+            //----GamePad2---//
+            case(15):
+                return gamepad2Pointer.a;
+            case(16):
+                return gamepad2Pointer.b;
+            case(17):
+                return gamepad2Pointer.x;
+            case(18):
+                return gamepad2Pointer.y;
+            case(19):
+                return gamepad2Pointer.back;
+            case(20):
+                return gamepad2Pointer.start;
+            case(21):
+                return gamepad2Pointer.guide;
+            case(22):
+                return gamepad2Pointer.dpad_left;
+            case(23):
+                return gamepad2Pointer.dpad_right;
+            case(24):
+                return gamepad2Pointer.dpad_down;
+            case(25):
+                return gamepad2Pointer.dpad_up;
+            case(26):
+                return gamepad2Pointer.left_bumper;
+            case(27):
+                return gamepad2Pointer.right_bumper;
+            case(28):
+                return gamepad2Pointer.left_stick_button;
+            case(29):
+                return gamepad2Pointer.right_stick_button;
+            default:
+                return false; 
         }
     }
 
