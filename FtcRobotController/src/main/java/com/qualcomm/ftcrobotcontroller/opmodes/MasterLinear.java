@@ -13,7 +13,7 @@ import com.walnuthillseagles.walnutlibrary.WalnutServo;
 /**
  * Created by Yan Vologzhanin on 1/23/2016.
  */
-public class MasterLinear extends LinearOpMode {
+public class MasterLinear {
     //Hardware
     private GoldConfig hardware;
     //Assignment
@@ -28,13 +28,7 @@ public class MasterLinear extends LinearOpMode {
     private long delay;
     private boolean willPark;
     private LinearOpMode helperOp;
-    public MasterLinear(){
-        alliance = "RED";
-        startPos=0;
-        delay = 0;
-        willPark = false;
-        helperOp = this;
-    }
+    
     public MasterLinear(String myAlliance, int myStart,
                         double myDelay, boolean parkCheck,LinearOpMode myOp){
         alliance = myAlliance;
@@ -62,16 +56,7 @@ public class MasterLinear extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode(){
-        telemetry.addData("Tests", "Init Robot");
-        initRobot();
-        telemetry.addData("Tests", "Robot Init'd");
-        try{
-            waitForStart();
-        }
-        catch(InterruptedException e){
-            Thread.currentThread().interrupt();
-        }
+    public void execute(){
         helperOp.telemetry.addData("Tests","Made it past Start");
         try{
             boolean isDone = false;
