@@ -42,7 +42,7 @@ public class FtcOpModeRegister implements OpModeRegister {
   /**
    * The Op Mode Manager will call this method when it wants a list of all
    * available op modes. Add your op mode to the list to enable it.
-   *
+
    * @param manager op mode manager
    */
   public void register(OpModeManager manager) {
@@ -58,7 +58,7 @@ public class FtcOpModeRegister implements OpModeRegister {
       manager.register("TeleOp", MasterTeleOp.class);
 
       manager.register("Linear Tests", SampleMaster.class);
-    
-    
+
+
   }
 }

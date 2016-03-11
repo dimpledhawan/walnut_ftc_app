@@ -48,7 +48,7 @@ public class MasterTeleOp extends OpMode{
             new IncMotor(hardware.slideLeftMotor, "Sliders", false, "LEFTY2", false, 0.25);
         slideRight =
             new IncMotor(hardware.slideRightMotor, "Sliders", false, "LEFTY2", true, 0.25);
-
+        //@TODO Figure out how Servos want to be used
         belt = new ContinuousServo(hardware.beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
 
         double hook1StartPos = Servo.MIN_POSITION+.25;
@@ -90,8 +90,7 @@ public class MasterTeleOp extends OpMode{
         VirtualGamepad.startProcessing(this);
     }
     @Override
-    public void loop(){
-    buttons.operate();
+    public void loop(){buttons.operate();
     }
     @Override
     public void stop(){

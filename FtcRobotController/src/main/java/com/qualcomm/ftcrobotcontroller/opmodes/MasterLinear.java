@@ -1,6 +1,10 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.hardware.Sensor;
+
+import com.qualcomm.hardware.hitechnic.HiTechnicNxtColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -79,14 +83,36 @@ public class MasterLinear {
                         hardware.spinMotor.setPower(1);
 
                         //Move to position
-                        drive.linearDrive(72*orientation, 0.5);
+                        drive.linearDrive(36 * orientation, 0.5);
                         drive.waitForCompletion();
-                        drive.backwardPivotTurn(40*orientation, 0.5);
+                        drive.tankTurn(-45 * orientation, 0.5);
                         drive.waitForCompletion();
-                        drive.linearDrive(12*orientation,0.5);
+                        drive.linearDrive(47 * orientation, 0.5);
+                        drive.waitForCompletion();
+                        drive.tankTurn(-45 * orientation, 0.5);
+                        drive.waitForCompletion();
+                        drive.linearDrive(20 * orientation, 0.5);
+                        drive.waitForCompletion();
 
                         //Turn off Spinners
                         hardware.spinMotor.setPower(0);
+
+                        steps = AutoSections.DEPLOYCLIMBERS;
+                    case POSITION2START:
+                        //Turn on Spinners
+                        hardware.spinMotor.setPower(1);
+
+                        //Move to position
+                        drive.linearDrive(10, 0.5);
+                        drive.waitForCompletion();
+                        drive.forwardPivotTurn(-45 * orientation, 0.5);
+                        drive.waitForCompletion();
+                        drive.linearDrive(93, 0.5);
+                        drive.waitForCompletion();
+                        drive.tankTurn(-45, 0.5);
+                        drive.waitForCompletion();
+                        drive.linearDrive(30, 0.5);
+                        drive.waitForCompletion();
 
                         steps = AutoSections.DEPLOYCLIMBERS;
                     case DEPLOYCLIMBERS:
@@ -98,7 +124,8 @@ public class MasterLinear {
                     case MOVEOUT:
                         //Extra code
                         if(!willPark){
-                            drive.linearDrive(orientation*29,0.5);
+                            drive.linearDrive(-60,0.5);
+                            drive.waitForCompletion();
                         }
                         isDone = true;
                         break;

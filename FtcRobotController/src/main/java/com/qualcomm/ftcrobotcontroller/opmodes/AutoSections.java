@@ -5,5 +5,5 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
  */ //Auto Part
 public enum AutoSections {
     STARTINGDELAY, POSITION1START, POSITION2START,COMPLETETOBEACON,
-    PRESSBEACON, DEPLOYCLIMBERS,MOVEOUT;
+    PRESSBEACON, DEPLOYCLIMBERS,MOVEOUT, PUSHBUTTON;
 }

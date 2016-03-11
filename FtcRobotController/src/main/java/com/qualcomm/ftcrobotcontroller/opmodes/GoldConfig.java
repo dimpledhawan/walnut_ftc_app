@@ -1,5 +1,8 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
+import android.graphics.Color;
+import android.hardware.Sensor;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.GyroSensor;
@@ -26,6 +29,8 @@ public class GoldConfig {
     public Servo hook2Servo;
 
     public GyroSensor gyro;
+    public Color color;
+
     public GoldConfig(OpMode currentOp){
         //Get Hardware
         rightMotor = currentOp.hardwareMap.dcMotor.get("motorRight");
