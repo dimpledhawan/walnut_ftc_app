@@ -9,7 +9,7 @@ public class SampleMaster extends LinearOpMode{
     public void runOpMode(){
         //Prepare
         telemetry.addData("Tests","Starting in Sample Master");
-        MasterLinear sample = new MasterLinear("RED",1,2,false,this);
+        MasterLinear sample = new MasterLinear("RED",1,2,true,this);
         telemetry.addData("Tests", "I'M READY FOR FREADY!");
         //Do
         try{

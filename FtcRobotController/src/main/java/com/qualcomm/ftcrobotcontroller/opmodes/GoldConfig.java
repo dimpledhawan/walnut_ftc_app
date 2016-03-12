@@ -27,6 +27,7 @@ public class GoldConfig {
     public Servo beltServo;
     public Servo hookServo;
     public Servo hook2Servo;
+    public Servo ziplineServo;
 
     public GyroSensor gyro;
     public Color color;
@@ -45,7 +46,7 @@ public class GoldConfig {
         climberServo = currentOp.hardwareMap.servo.get("climber");
         hookServo = currentOp.hardwareMap.servo.get("hook");
         hook2Servo = currentOp.hardwareMap.servo.get("hook2");
-
+        ziplineServo = currentOp.hardwareMap.servo.get("zipline");
 
 
         gyro = currentOp.hardwareMap.gyroSensor.get("gyro");

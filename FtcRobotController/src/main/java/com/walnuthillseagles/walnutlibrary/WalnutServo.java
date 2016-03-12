@@ -31,7 +31,6 @@ public class WalnutServo implements Drivable, Auto {
         for(int i = 0;i<buttons.size();i++){
             temp = buttons.get(i);
             if(VirtualGamepad.boolValues[temp.getPos()]){
-                //@TODO Change method name here to make more sense
                 servo.setPosition(temp.getVal());
             }
             else if(!isToggle&&!VirtualGamepad.boolValues[temp.getPos()]){

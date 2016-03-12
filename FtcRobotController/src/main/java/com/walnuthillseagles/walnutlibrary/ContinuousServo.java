@@ -1,91 +1,97 @@
 package com.walnuthillseagles.walnutlibrary;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import java.util.ArrayList;
 
 /**
  * Created by Yan Vologzhanin on 2/8/2016.
  */
 public class ContinuousServo implements Drivable{
     private Servo servo;
-    private int tablePos;
+    private ArrayList<IncEvent> tablePos;
     private double deadZone;
     private int orientation;
     private String name;
     private double trueCenter;
+    public class IncEvent{
+        public int tableIndex;
+        public int orientation;
+        public IncEvent(String control, boolean isReversed){
+            tableIndex = addTable(AnalogValues.valueOf(control.toUpperCase()));
+            orientation = isReversed ? -1 : 1;
+        }
+    }
 
     public ContinuousServo(Servo myServo, String myName, double startPos,
                            String myControl, boolean reverse, double myDeadzone) {
         servo = myServo;
         name = myName;
+        tablePos = new ArrayList<IncEvent>();
         //Assign Table Position
-        String nonCaseSensetive = myControl.toUpperCase();
-        setTable(AnalogValues.valueOf(nonCaseSensetive));
-        if(reverse)
-            orientation = -1;
-        else
-            orientation = 1;
+        trueCenter = startPos;
+        tablePos.add(new IncEvent(myControl.toUpperCase(), reverse));
         deadZone = myDeadzone;
         //@TODO: Use this if necessary 
         //trueCenter = startPos;
         stop();
     }
     public void stop(){
-        servo.setPosition(0.5);
+        servo.setPosition(trueCenter);
     }
-    private void setTable(AnalogValues myControl){
+    private int addTable(AnalogValues myControl){
         switch(myControl){
             case LEFTX1:
-                tablePos = 0;
-                break;
+                return 0;
             case LEFTY1:
-                tablePos = 1;
-                break;
+                return 1;
             case RIGHTX1:
-                tablePos = 2;
-                break;
+                return 2;
             case RIGHTY1:
-                tablePos = 3;
-                break;
+                return 3;
             case LEFTZ1:
-                tablePos = 4;
-                break;
+                return 4;
             case RIGHTZ1:
-                tablePos = 5;
-                break;
+                return 5;
             case LEFTX2:
-                tablePos = 6;
-                break;
+                return 6;
             case LEFTY2:
-                tablePos = 7;
-                break;
+                return 7;
             case RIGHTX2:
-                tablePos = 8;
-                break;
+                return 8;
             case RIGHTY2:
-                tablePos = 9;
-                break;
+                return 9;
             case LEFTZ2:
-                tablePos = 10;
-                break;
+                return 10;
             case RIGHTZ2:
-                tablePos = 11;
-                break;
+                return 11;
             default:
-                tablePos = 0;
+                return 0;
         }
     }
-
+    public void addInput(String input, boolean isReversed){
+        tablePos.add(new IncEvent(input.toUpperCase(),isReversed));
+    }
     public void setPower(double power) {
         servo.setPosition(power / 2 + 0.5);
     }
     public void operate(){
-        double val = VirtualGamepad.doubleValues[tablePos];
-        if(Math.abs(val)>deadZone )
-            this.setPower(val*orientation);
-        else if(Math.abs(val)>0.95)
-            this.setPower(0.95 * orientation);
-        else
+        ArrayList<Integer> zeroChecker = new ArrayList<Integer>();
+        for(int i=0;i<tablePos.size();i++)
+        {
+            double val = VirtualGamepad.doubleValues[tablePos.get(i).tableIndex];
+            zeroChecker.add((int) val);
+            if(Math.abs(val)>deadZone )
+                this.setPower(val* tablePos.get(i).orientation);
+            else if(Math.abs(val)>0.95)
+                this.setPower(0.95 * tablePos.get(i).orientation);
+        }
+        int isZero = 0;
+        for(int i=0;i<zeroChecker.size();i++){
+            isZero = Math.max(isZero, Math.abs(zeroChecker.get(i)));
+        }
+        if(isZero == 0)
             this.stop();
+
     }
 }

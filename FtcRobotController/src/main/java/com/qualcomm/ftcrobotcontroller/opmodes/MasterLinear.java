@@ -1,18 +1,9 @@
 package com.qualcomm.ftcrobotcontroller.opmodes;
 
-import android.hardware.Sensor;
-
-import com.qualcomm.hardware.hitechnic.HiTechnicNxtColorSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.walnuthillseagles.walnutlibrary.DistanceDrive;
 import com.walnuthillseagles.walnutlibrary.DistanceMotor;
-import com.walnuthillseagles.walnutlibrary.LinearControlScheme;
-import com.walnuthillseagles.walnutlibrary.TimedMotor;
-import com.walnuthillseagles.walnutlibrary.WalnutServo;
 
 /**
  * Created by Yan Vologzhanin on 1/23/2016.
@@ -35,7 +26,7 @@ public class MasterLinear {
     private LinearOpMode helperOp;
     
     public MasterLinear(String myAlliance, int myStart,
-                        double myDelay, boolean parkCheck,LinearOpMode myOp){
+                        double myDelay, boolean parkCheck, LinearOpMode myOp){
         alliance = myAlliance.toUpperCase();
         orientation = alliance.equals("RED") ? 1:-1;
         startPos=myStart;
@@ -72,61 +63,21 @@ public class MasterLinear {
                 helperOp.telemetry.addData("Current Step",steps);
                 switch(steps){
                     case STARTINGDELAY:
-                        if(delay > 0)
-                            helperOp.sleep(delay);
-                        if(startPos == 1)
-                            steps = AutoSections.POSITION1START;
-                        else
-                            steps = AutoSections.POSITION2START;
+                        safeDelay();
+                        steps = (startPos == 1) ?
+                                AutoSections.POSITION1START:AutoSections.POSITION2START;
                     case POSITION1START:
-                        //Turn on Spinners
-                        hardware.spinMotor.setPower(1);
-
-                        //Move to position
-                        drive.linearDrive(36 * orientation, 0.5);
-                        drive.waitForCompletion();
-                        drive.tankTurn(-45 * orientation, 0.5);
-                        drive.waitForCompletion();
-                        drive.linearDrive(47 * orientation, 0.5);
-                        drive.waitForCompletion();
-                        drive.tankTurn(-45 * orientation, 0.5);
-                        drive.waitForCompletion();
-                        drive.linearDrive(20 * orientation, 0.5);
-                        drive.waitForCompletion();
-
-                        //Turn off Spinners
-                        hardware.spinMotor.setPower(0);
-
+                        runPlan1();
                         steps = AutoSections.DEPLOYCLIMBERS;
                     case POSITION2START:
-                        //Turn on Spinners
-                        hardware.spinMotor.setPower(1);
-
-                        //Move to position
-                        drive.linearDrive(10, 0.5);
-                        drive.waitForCompletion();
-                        drive.forwardPivotTurn(-45 * orientation, 0.5);
-                        drive.waitForCompletion();
-                        drive.linearDrive(93, 0.5);
-                        drive.waitForCompletion();
-                        drive.tankTurn(-45, 0.5);
-                        drive.waitForCompletion();
-                        drive.linearDrive(30, 0.5);
-                        drive.waitForCompletion();
-
+                        runPlan2();
                         steps = AutoSections.DEPLOYCLIMBERS;
                     case DEPLOYCLIMBERS:
-                        hardware.climberServo.setPosition(.18);
-                        helperOp.sleep(1000);
-                        hardware.climberServo.setPosition(.47);
-                        helperOp.sleep(1000);
-                        steps = AutoSections.MOVEOUT;
+                        deployClimbers();
+                        steps=AutoSections.MOVEOUT;
                     case MOVEOUT:
                         //Extra code
-                        if(!willPark){
-                            drive.linearDrive(-60,0.5);
-                            drive.waitForCompletion();
-                        }
+                        doPark();
                         isDone = true;
                         break;
                 }
@@ -140,4 +91,51 @@ public class MasterLinear {
         helperOp.telemetry.addData("Tests","Done");
 
     }
+    public void safeDelay() throws InterruptedException{
+        if(delay > 0)
+            helperOp.sleep(delay);
+    }
+    public void runPlan1() throws InterruptedException{
+        //Turn on Spinners
+        hardware.spinMotor.setPower(1);
+
+        //Move to position
+        drive.linearDrive(36 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.tankTurn(-40 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.linearDrive(61 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.tankTurn(-40 * orientation, 0.5);
+        drive.waitForCompletion();
+
+        //Turn off Spinners
+        hardware.spinMotor.setPower(0);
+    }
+
+    public void runPlan2() throws InterruptedException{
+        //Turn on Spinners
+        hardware.spinMotor.setPower(1);
+
+        //Move to position
+        drive.linearDrive(10, 0.5);
+        drive.forwardPivotTurn(-45 * orientation, 0.5);
+        drive.linearDrive(93, 0.5);
+        drive.tankTurn(-45, 0.5);
+        drive.linearDrive(30, 0.5);
+    }
+
+    public void deployClimbers() throws InterruptedException{
+        hardware.climberServo.setPosition(0.85);
+        helperOp.sleep(1000);
+        hardware.climberServo.setPosition(0.15);
+        helperOp.sleep(1000);
+    }
+    public void doPark() throws InterruptedException{
+        if(!willPark){
+            drive.linearDrive(-2,0.5); //60
+            drive.waitForCompletion();
+        }
+    }
+
 }

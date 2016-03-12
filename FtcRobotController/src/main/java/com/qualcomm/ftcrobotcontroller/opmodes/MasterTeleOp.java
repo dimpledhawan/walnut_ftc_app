@@ -25,6 +25,7 @@ public class MasterTeleOp extends OpMode{
     private WalnutServo door;
     private WalnutServo hook;
     private WalnutServo hook2;
+    private ContinuousServo zipline;
     //Control Scheme
     ControlScheme buttons;
     @Override
@@ -45,11 +46,14 @@ public class MasterTeleOp extends OpMode{
         spinner.addButton("Y2", 1);
         //Other
         slideLeft =
-            new IncMotor(hardware.slideLeftMotor, "Sliders", false, "LEFTY2", false, 0.25);
+            new IncMotor(hardware.slideLeftMotor, "Sliders", false, "LEFTY2", true, 0.25);
         slideRight =
-            new IncMotor(hardware.slideRightMotor, "Sliders", false, "LEFTY2", true, 0.25);
+            new IncMotor(hardware.slideRightMotor, "Sliders", false, "LEFTY2", false, 0.25);
         //@TODO Figure out how Servos want to be used
         belt = new ContinuousServo(hardware.beltServo, "Belt",0.5,"RIGHTX2",false,0.1);
+
+        zipline = new ContinuousServo(hardware.ziplineServo,"Zipline",0.51,"RIGHTZ1", true,0.05);
+        zipline.addInput("LEFTZ1",false);
 
         double hook1StartPos = Servo.MIN_POSITION+.25;
         hook = new WalnutServo(hardware.hookServo,hook1StartPos,true);
@@ -62,7 +66,8 @@ public class MasterTeleOp extends OpMode{
         hook2.addButton("RBUMP1",0);
 
         climber = new WalnutServo(hardware.climberServo,0.7,true);
-        climber.addButton("X2",0.3);
+        climber.addButton("X1",0.85);
+        climber.addButton("Y1",0.15);
 
         /*
         hook = new WalnutServo(hookServo, 0, "RBUMP1", 0, true);
@@ -82,6 +87,7 @@ public class MasterTeleOp extends OpMode{
         buttons.add(climber);
         buttons.add(hook);
         buttons.add(hook2);
+        buttons.add(zipline);
         telemetry.addData("DEBUG","FINISHED INIT");
     }
     @Override
@@ -90,8 +96,7 @@ public class MasterTeleOp extends OpMode{
         VirtualGamepad.startProcessing(this);
     }
     @Override
-    public void loop(){buttons.operate();
-    }
+    public void loop(){buttons.operate();}
     @Override
     public void stop(){
     buttons.stop();
