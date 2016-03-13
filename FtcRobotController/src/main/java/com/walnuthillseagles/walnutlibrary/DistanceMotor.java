@@ -3,6 +3,8 @@ package com.walnuthillseagles.walnutlibrary;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 
+import java.util.Queue;
+
 /**
  * Created by Yan Vologzhanin on 1/2/2016.
  */

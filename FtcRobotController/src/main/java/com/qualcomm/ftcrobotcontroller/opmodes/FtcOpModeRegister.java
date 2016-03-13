@@ -56,8 +56,25 @@ public class FtcOpModeRegister implements OpModeRegister {
      */
 
       manager.register("TeleOp",MasterTeleOp.class);
-      manager.register("Auto_RedNear", Auto_RedNear.class);
-      manager.register("Auto_RedFar", Auto_RedFar.class);
-      manager.register("Auto_BlueNear", Auto_BlueNear.class);
+
+      manager.register("RedNear", Auto_RedNear.class);
+      manager.register("RedNear_wait", Auto_RedNear_wait.class);
+      manager.register("RedNear_park", Auto_RedNear_stay.class);
+      manager.register("RedNear_wait_park", Auto_RedNear_wait_stay.class);
+
+      manager.register("RedFar", Auto_RedFar.class);
+      manager.register("RedFar_wait", Auto_RedFar_wait.class);
+      manager.register("RedFar_park", Auto_RedFar_stay.class);
+      manager.register("RedFar_wait_park", Auto_RedNear_wait_stay.class);
+
+      manager.register("BlueNear", Auto_BlueNear.class);
+      manager.register("BlueNear_wait", Auto_BlueNear_wait.class);
+      manager.register("BlueNear_park", Auto_BlueNear_stay.class);
+      manager.register("BlueNear_wait_park", Auto_BlueNear_wait_stay.class);
+
+      manager.register("BlueFar", Auto_BlueFar.class);
+      manager.register("BlueFar_wait", Auto_BlueFar_wait.class);
+      manager.register("BlueFar_park", Auto_BlueFar_stay.class);
+      manager.register("BlueFar_wait_park", Auto_BlueFar_wait_stay.class);
   }
 }

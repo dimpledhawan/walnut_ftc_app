@@ -44,6 +44,7 @@ public class MasterLinear {
         hardware.beltServo.setPosition(0.5);
         hardware.hook2Servo.setPosition(Servo.MAX_POSITION-.4);
         hardware.hookServo.setPosition(Servo.MIN_POSITION+.25);
+        hardware.ziplineServo.setPosition(0.51);
 
         helperOp.telemetry.addData("Tests", "Hardware Init'd");
         //Setup Software
@@ -130,14 +131,19 @@ public class MasterLinear {
         hardware.spinMotor.setPower(1);
 
         //Move to position
-        drive.forwardPivotTurn(-40 * orientation, 0.5);
+        drive.forwardPivotTurn(-47 * orientation, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(93, 0.5);
+        drive.linearDrive(93.5, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn(-42.5 * orientation, 0.5);
+        drive.linearDrive(10, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(33, 0.5);
+        drive.linearDrive(-10, 0.5);
         drive.waitForCompletion();
+        drive.tankTurn(-35.5 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.linearDrive(28, 0.5);
+        drive.waitForCompletion();
+
 
         //Turn off Spinners
         hardware.spinMotor.setPower(0);

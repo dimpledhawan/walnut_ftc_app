@@ -73,5 +73,6 @@ public class GoldConfig {
         slideRightMotor.setPower(0);
 
         beltServo.setPosition(0.5);
+        ziplineServo.setPosition(0.5);
     }
 }
