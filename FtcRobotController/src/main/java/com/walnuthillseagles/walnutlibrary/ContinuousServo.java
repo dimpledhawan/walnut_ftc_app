@@ -21,10 +21,6 @@ public class ContinuousServo implements Drivable{
             tableIndex = addTable(AnalogValues.valueOf(control.toUpperCase()));
             orientation = isReversed ? -1 : 1;
         }
-        @Override
-        public String toString(){
-            return "Index " + tableIndex + " and orientaion " + orientation;
-        }
     }
 
     public ContinuousServo(Servo myServo, String myName, double startPos,
@@ -97,13 +93,5 @@ public class ContinuousServo implements Drivable{
         if(isZero == 0)
             this.stop();
 
-    }
-    //Debugging
-    public String getTablePos(){
-        String ret = "";
-        for(int i=0;i<tablePos.size();i++){
-            ret += i + ":" + tablePos.get(i) + ":";
-        }
-        return ret;
     }
 }

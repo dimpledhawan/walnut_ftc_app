@@ -89,7 +89,6 @@ public class MasterTeleOp extends OpMode{
         buttons.add(hook2);
         buttons.add(zipline);
         telemetry.addData("DEBUG","FINISHED INIT");
-        telemetry.addData("Zipline Data", zipline.getTablePos());
     }
     @Override
     public void start(){
@@ -97,12 +96,7 @@ public class MasterTeleOp extends OpMode{
         VirtualGamepad.startProcessing(this);
     }
     @Override
-    public void loop(){
-        buttons.operate();
-        telemetry.addData("Zipline Left",gamepad1.left_trigger);
-        telemetry.addData("Zipline Right", gamepad1.right_trigger);
-
-    }
+    public void loop(){buttons.operate();}
     @Override
     public void stop(){
     buttons.stop();
