@@ -29,7 +29,7 @@ public class MasterLinear {
                         double myDelay, boolean parkCheck, LinearOpMode myOp){
         alliance = myAlliance.toUpperCase();
         orientation = alliance.equals("RED") ? 1:-1;
-        startPos=myStart;
+        startPos = myStart;
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
         helperOp = myOp;
@@ -50,7 +50,7 @@ public class MasterLinear {
         leftDrive = new DistanceMotor(hardware.leftMotor, "Left",true,false,4,1,1440);
         rightDrive = new DistanceMotor(hardware.rightMotor, "Right",true, true, 4,1,1440);
         drive = new DistanceDrive(leftDrive,rightDrive,17);
-        steps = AutoSections.POSITION1START;
+        steps = AutoSections.STARTINGDELAY;
         helperOp.telemetry.addData("Tests", "Software Init'd");
     }
 
@@ -66,15 +66,20 @@ public class MasterLinear {
                         safeDelay();
                         steps = (startPos == 1) ?
                                 AutoSections.POSITION1START:AutoSections.POSITION2START;
+                        break;
                     case POSITION1START:
                         runPlan1();
                         steps = AutoSections.DEPLOYCLIMBERS;
+                        break;
                     case POSITION2START:
                         runPlan2();
                         steps = AutoSections.DEPLOYCLIMBERS;
+                        break;
                     case DEPLOYCLIMBERS:
                         deployClimbers();
-                        steps=AutoSections.MOVEOUT;
+                        helperOp.waitOneFullHardwareCycle();
+                        steps = AutoSections.MOVEOUT;
+                        break;
                     case MOVEOUT:
                         //Extra code
                         doPark();
@@ -82,6 +87,7 @@ public class MasterLinear {
                         break;
                 }
                 helperOp.waitOneFullHardwareCycle();
+                helperOp.telemetry.addData("Current Step", steps);
             }
         }
         catch(InterruptedException e){
@@ -100,13 +106,19 @@ public class MasterLinear {
         hardware.spinMotor.setPower(1);
 
         //Move to position
-        drive.linearDrive(36 * orientation, 0.5);
+        drive.linearDrive(35.5, 0.5);
         drive.waitForCompletion();
         drive.tankTurn(-40 * orientation, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(61 * orientation, 0.5);
+        drive.linearDrive(54, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn(-40 * orientation, 0.5);
+        drive.linearDrive(10, 0.5);
+        drive.waitForCompletion();
+        drive.linearDrive(-10,0.5);
+        drive.waitForCompletion();
+        drive.tankTurn(-42.5 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.linearDrive(11, 0.5);
         drive.waitForCompletion();
 
         //Turn off Spinners
@@ -118,22 +130,30 @@ public class MasterLinear {
         hardware.spinMotor.setPower(1);
 
         //Move to position
-        drive.linearDrive(10, 0.5);
-        drive.forwardPivotTurn(-45 * orientation, 0.5);
+        drive.forwardPivotTurn(-40 * orientation, 0.5);
+        drive.waitForCompletion();
         drive.linearDrive(93, 0.5);
-        drive.tankTurn(-45, 0.5);
-        drive.linearDrive(30, 0.5);
+        drive.waitForCompletion();
+        drive.tankTurn(-42.5 * orientation, 0.5);
+        drive.waitForCompletion();
+        drive.linearDrive(33, 0.5);
+        drive.waitForCompletion();
+
+        //Turn off Spinners
+        hardware.spinMotor.setPower(0);
     }
 
     public void deployClimbers() throws InterruptedException{
-        hardware.climberServo.setPosition(0.85);
-        helperOp.sleep(1000);
         hardware.climberServo.setPosition(0.15);
+        helperOp.sleep(1000);
+        hardware.climberServo.setPosition(0.2);
+        helperOp.sleep(1000);
+        hardware.climberServo.setPosition(0.75);
         helperOp.sleep(1000);
     }
     public void doPark() throws InterruptedException{
         if(!willPark){
-            drive.linearDrive(-2,0.5); //60
+            drive.linearDrive(-60,0.5); //60
             drive.waitForCompletion();
         }
     }
