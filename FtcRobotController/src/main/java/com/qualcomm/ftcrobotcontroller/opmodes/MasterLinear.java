@@ -23,12 +23,19 @@ public class MasterLinear {
     private long delay;
     private boolean willPark;
     private int orientation;
+    private double turnCorrectionFactor;
+    private double linearCorrectionFactor;
+    
+    
     private LinearOpMode helperOp;
     
     public MasterLinear(String myAlliance, int myStart,
                         double myDelay, boolean parkCheck, LinearOpMode myOp){
         alliance = myAlliance.toUpperCase();
+        //First is red, second is blue
         orientation = alliance.equals("RED") ? 1:-1;
+        turnCorrectionFactor = alliance.equals("RED") ? 0 : 0;
+        linearCorrectionFactor = alliance.equals("RED") ? 0: 0;
         startPos = myStart;
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
@@ -109,7 +116,7 @@ public class MasterLinear {
         //Move to position
         drive.linearDrive(35.5, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn(-40 * orientation, 0.5);
+        drive.tankTurn((-40 * orientation)+turnCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(54, 0.5);
         drive.waitForCompletion();
@@ -117,7 +124,7 @@ public class MasterLinear {
         drive.waitForCompletion();
         drive.linearDrive(-10,0.5);
         drive.waitForCompletion();
-        drive.tankTurn(-42.5 * orientation, 0.5);
+        drive.tankTurn((-42.5 * orientation)+turnCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(11, 0.5);
         drive.waitForCompletion();
@@ -131,7 +138,7 @@ public class MasterLinear {
         hardware.spinMotor.setPower(1);
 
         //Move to position
-        drive.forwardPivotTurn(-47 * orientation, 0.5);
+        drive.forwardPivotTurn((-47 * orientation)+turnCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(105, 0.5);
         drive.waitForCompletion();
@@ -139,7 +146,7 @@ public class MasterLinear {
         drive.waitForCompletion();
         drive.linearDrive(-15, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn(-35.5 * orientation, 0.5);
+        drive.tankTurn((-35.5 * orientation)+turnCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(15, 0.5);
         drive.waitForCompletion();
@@ -150,10 +157,14 @@ public class MasterLinear {
 
     public void deployClimbers() throws InterruptedException{
         hardware.climberServo.setPosition(0.15);
+<<<<<<< HEAD
         helperOp.sleep(1000);
         hardware.climberServo.setPosition(0.05);
         helperOp.sleep(1000);
         //0.75 - Old postion
+=======
+        helperOp.sleep(1500);
+>>>>>>> origin/ftcupdate
         hardware.climberServo.setPosition(0.75);
         helperOp.sleep(1000);
     }
