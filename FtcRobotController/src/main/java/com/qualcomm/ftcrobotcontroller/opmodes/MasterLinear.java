@@ -25,6 +25,7 @@ public class MasterLinear {
     private int orientation;
     private double turnCorrectionFactor;
     private double linearCorrectionFactor;
+    private double linearCorrectionFactor2;
     
     
     private LinearOpMode helperOp;
@@ -34,11 +35,15 @@ public class MasterLinear {
         alliance = myAlliance.toUpperCase();
         //First is red, second is blue
         orientation = alliance.equals("RED") ? 1:-1;
-        turnCorrectionFactor = alliance.equals("RED") ? 0 : 0;
-        linearCorrectionFactor = alliance.equals("RED") ? 0: 0;
+        //Due to a leftward drift caused in motors, these have been placed temporarly for comp
+        turnCorrectionFactor = alliance.equals("RED") ? 0 : -2.25;
+        linearCorrectionFactor = alliance.equals("RED") ? 0: -8;
+        linearCorrectionFactor2 = alliance.equals("RED") ? 0:5;
+        //Instance fields
         startPos = myStart;
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
+        //Used for telemtery
         helperOp = myOp;
         initRobot();
     }
@@ -116,7 +121,7 @@ public class MasterLinear {
         //Move to position
         drive.linearDrive(35.5, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-40 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-37+turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
         drive.linearDrive(54, 0.5);
         drive.waitForCompletion();
@@ -124,9 +129,9 @@ public class MasterLinear {
         drive.waitForCompletion();
         drive.linearDrive(-10,0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-42.5 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-41.5+turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(11, 0.5);
+        drive.linearDrive(14, 0.5);
         drive.waitForCompletion();
 
         //Turn off Spinners
@@ -138,17 +143,17 @@ public class MasterLinear {
         hardware.spinMotor.setPower(1);
 
         //Move to position
-        drive.forwardPivotTurn((-47 * orientation)+turnCorrectionFactor, 0.5);
+        drive.forwardPivotTurn((-43 * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(105, 0.5);
+        drive.linearDrive(104.5 + linearCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(15, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(-15, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-35.5 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-35.5+turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(15, 0.5);
+        drive.linearDrive(19.5+linearCorrectionFactor2, 0.5);
         drive.waitForCompletion();
 
         //Turn off Spinners
@@ -157,14 +162,7 @@ public class MasterLinear {
 
     public void deployClimbers() throws InterruptedException{
         hardware.climberServo.setPosition(0.15);
-<<<<<<< HEAD
-        helperOp.sleep(1000);
-        hardware.climberServo.setPosition(0.05);
-        helperOp.sleep(1000);
-        //0.75 - Old postion
-=======
         helperOp.sleep(1500);
->>>>>>> origin/ftcupdate
         hardware.climberServo.setPosition(0.75);
         helperOp.sleep(1000);
     }
