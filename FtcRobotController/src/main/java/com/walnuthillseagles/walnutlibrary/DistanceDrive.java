@@ -42,7 +42,6 @@ public class DistanceDrive {
             leftDrive.operate(distance,pow);
             rightDrive.operate(distance * REVERSEORIENTATION, pow * REVERSEORIENTATION);
         }
-
     }
     public void tankTurn(double degrees){
         tankTurn(degrees, 1);

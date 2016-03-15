@@ -105,6 +105,7 @@ public class MasterTeleOp extends OpMode{
     }
     @Override
     public void stop(){
-    buttons.stop();
+        buttons.stop();
+        VirtualGamepad.stopProcessing();
     }
 }

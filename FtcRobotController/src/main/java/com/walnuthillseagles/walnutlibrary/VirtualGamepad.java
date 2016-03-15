@@ -71,52 +71,61 @@ public class VirtualGamepad implements Runnable{
         canProcess = true;
         //Will loop and update values until told to fullStop
         while (canProcess) {
-            //Analog Values
-            doubleValues[0] = gamepad1Pointer.left_stick_x;
-            doubleValues[1] = gamepad1Pointer.left_stick_y;
-            doubleValues[2] = gamepad1Pointer.right_stick_x;
-            doubleValues[3] = gamepad1Pointer.right_stick_y;
-            doubleValues[4] = gamepad1Pointer.left_trigger;
-            doubleValues[5] = gamepad1Pointer.right_trigger;
+            try{
+                //Analog Values
+                doubleValues[0] = gamepad1Pointer.left_stick_x;
+                doubleValues[1] = gamepad1Pointer.left_stick_y;
+                doubleValues[2] = gamepad1Pointer.right_stick_x;
+                doubleValues[3] = gamepad1Pointer.right_stick_y;
+                doubleValues[4] = gamepad1Pointer.left_trigger;
+                doubleValues[5] = gamepad1Pointer.right_trigger;
 
-            doubleValues[6] = gamepad2Pointer.left_stick_x;
-            doubleValues[7] = gamepad2Pointer.left_stick_y;
-            doubleValues[8] = gamepad2Pointer.right_stick_x;
-            doubleValues[9] = gamepad2Pointer.right_stick_y;
-            doubleValues[10] = gamepad2Pointer.left_trigger;
-            doubleValues[11] = gamepad2Pointer.right_trigger;
-            //Digital Values
-            boolValues[0] = gamepad1Pointer.a;
-            boolValues[1] = gamepad1Pointer.b;
-            boolValues[2] = gamepad1Pointer.x;
-            boolValues[3] = gamepad1Pointer.y;
-            boolValues[4] = gamepad1Pointer.back;
-            boolValues[5] = gamepad1Pointer.start;
-            boolValues[6] = gamepad1Pointer.guide;
-            boolValues[7] = gamepad1Pointer.dpad_left;
-            boolValues[8] = gamepad1Pointer.dpad_right;
-            boolValues[9] = gamepad1Pointer.dpad_down;
-            boolValues[10] = gamepad1Pointer.dpad_up;
-            boolValues[11] = gamepad1Pointer.left_bumper;
-            boolValues[12] = gamepad1Pointer.right_bumper;
-            boolValues[13] = gamepad1Pointer.left_stick_button;
-            boolValues[14] = gamepad1Pointer.right_stick_button;
+                doubleValues[6] = gamepad2Pointer.left_stick_x;
+                doubleValues[7] = gamepad2Pointer.left_stick_y;
+                doubleValues[8] = gamepad2Pointer.right_stick_x;
+                doubleValues[9] = gamepad2Pointer.right_stick_y;
+                doubleValues[10] = gamepad2Pointer.left_trigger;
+                doubleValues[11] = gamepad2Pointer.right_trigger;
+                //Digital Values
+                boolValues[0] = gamepad1Pointer.a;
+                boolValues[1] = gamepad1Pointer.b;
+                boolValues[2] = gamepad1Pointer.x;
+                boolValues[3] = gamepad1Pointer.y;
+                boolValues[4] = gamepad1Pointer.back;
+                boolValues[5] = gamepad1Pointer.start;
+                boolValues[6] = gamepad1Pointer.guide;
+                boolValues[7] = gamepad1Pointer.dpad_left;
+                boolValues[8] = gamepad1Pointer.dpad_right;
+                boolValues[9] = gamepad1Pointer.dpad_down;
+                boolValues[10] = gamepad1Pointer.dpad_up;
+                boolValues[11] = gamepad1Pointer.left_bumper;
+                boolValues[12] = gamepad1Pointer.right_bumper;
+                boolValues[13] = gamepad1Pointer.left_stick_button;
+                boolValues[14] = gamepad1Pointer.right_stick_button;
 
-            boolValues[15] = gamepad2Pointer.a;
-            boolValues[16] = gamepad2Pointer.b;
-            boolValues[17] = gamepad2Pointer.x;
-            boolValues[18] = gamepad2Pointer.y;
-            boolValues[19] = gamepad2Pointer.back;
-            boolValues[20] = gamepad2Pointer.start;
-            boolValues[21] = gamepad2Pointer.guide;
-            boolValues[22] = gamepad2Pointer.dpad_left;
-            boolValues[23] = gamepad2Pointer.dpad_right;
-            boolValues[24] = gamepad2Pointer.dpad_down;
-            boolValues[25] = gamepad2Pointer.dpad_up;
-            boolValues[26] = gamepad2Pointer.left_bumper;
-            boolValues[27] = gamepad2Pointer.right_bumper;
-            boolValues[28] = gamepad2Pointer.left_stick_button;
-            boolValues[29] = gamepad2Pointer.right_stick_button;
+                boolValues[15] = gamepad2Pointer.a;
+                boolValues[16] = gamepad2Pointer.b;
+                boolValues[17] = gamepad2Pointer.x;
+                boolValues[18] = gamepad2Pointer.y;
+                boolValues[19] = gamepad2Pointer.back;
+                boolValues[20] = gamepad2Pointer.start;
+                boolValues[21] = gamepad2Pointer.guide;
+                boolValues[22] = gamepad2Pointer.dpad_left;
+                boolValues[23] = gamepad2Pointer.dpad_right;
+                boolValues[24] = gamepad2Pointer.dpad_down;
+                boolValues[25] = gamepad2Pointer.dpad_up;
+                boolValues[26] = gamepad2Pointer.left_bumper;
+                boolValues[27] = gamepad2Pointer.right_bumper;
+                boolValues[28] = gamepad2Pointer.left_stick_button;
+                boolValues[29] = gamepad2Pointer.right_stick_button;
+                synchronized (this){
+                    this.wait(1);
+                }
+            }
+            catch (InterruptedException e){
+                canProcess = false;
+            }
+
         }
     }
     //Called by elsewhere in the program to terminate processing
@@ -127,6 +136,7 @@ public class VirtualGamepad implements Runnable{
         VirtualGamepad updater = new VirtualGamepad();
         Thread processor = new Thread(updater);
         updater.setGamepads(myOpmode.gamepad1, myOpmode.gamepad2);
+        updater.currentOpMode = myOpmode;
         processor.start();
     }
     //@TODO Figure out how to handle default Case

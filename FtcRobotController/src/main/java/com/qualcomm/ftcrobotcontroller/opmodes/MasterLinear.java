@@ -133,17 +133,16 @@ public class MasterLinear {
         //Move to position
         drive.forwardPivotTurn(-47 * orientation, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(93.5, 0.5);
+        drive.linearDrive(105, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(10, 0.5);
+        drive.linearDrive(15, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(-10, 0.5);
+        drive.linearDrive(-15, 0.5);
         drive.waitForCompletion();
         drive.tankTurn(-35.5 * orientation, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(28, 0.5);
+        drive.linearDrive(15, 0.5);
         drive.waitForCompletion();
-
 
         //Turn off Spinners
         hardware.spinMotor.setPower(0);
@@ -152,8 +151,9 @@ public class MasterLinear {
     public void deployClimbers() throws InterruptedException{
         hardware.climberServo.setPosition(0.15);
         helperOp.sleep(1000);
-        hardware.climberServo.setPosition(0.2);
+        hardware.climberServo.setPosition(0.05);
         helperOp.sleep(1000);
+        //0.75 - Old postion
         hardware.climberServo.setPosition(0.75);
         helperOp.sleep(1000);
     }
