@@ -8,7 +8,7 @@ import com.walnuthillseagles.walnutlibrary.DistanceMotor;
 /**
  * Created by Yan Vologzhanin on 1/23/2016.
  */
-public class TesterLinear {
+public class TestLinear {
     //Hardware
     private GoldConfig hardware;
     //Assignment
@@ -25,16 +25,20 @@ public class TesterLinear {
     private int orientation;
     private double turnCorrectionFactor;
     private double linearCorrectionFactor;
-    
+    private double linearCorrectionFactor2;
+    private double pivotCorrection;
     
     private LinearOpMode helperOp;
     
-    public MasterLinear(String myAlliance, AutoSections stepTest, LinearOpMode myOp){
+    public TestLinear(String myAlliance, int myStart
+                      , double myDelay, boolean parkCheck, LinearOpMode myOp, AutoSections stepTest){
         alliance = myAlliance.toUpperCase();
         //First is red, second is blue
         orientation = alliance.equals("RED") ? 1:-1;
-        turnCorrectionFactor = alliance.equals("RED") ? 0 : 0;
-        linearCorrectionFactor = alliance.equals("RED") ? 0: 0;
+        turnCorrectionFactor = alliance.equals("RED") ? 0 : -2.25;
+        pivotCorrection = alliance.equals("RED") ? 0 : 0;
+        linearCorrectionFactor = alliance.equals("RED") ? 0: -8;
+        linearCorrectionFactor2 = alliance.equals("RED") ? 0: 8;
         startPos = myStart;
         delay = (long)(myDelay * 1000);
         willPark = parkCheck;
@@ -113,17 +117,17 @@ public class TesterLinear {
         //Move to position
         drive.linearDrive(35.5, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-40 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-37 + turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(54, 0.5);
+        drive.linearDrive(52.5, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(10, 0.5);
+        drive.linearDrive(15, 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(-10,0.5);
+        drive.linearDrive(-15,0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-42.5 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-41.5 + turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(11, 0.5);
+        drive.linearDrive(14, 0.5);
         drive.waitForCompletion();
 
     }
@@ -131,17 +135,17 @@ public class TesterLinear {
     public void runPlan2() throws InterruptedException{
 
         //Move to position
-        drive.forwardPivotTurn((-47 * orientation)+turnCorrectionFactor, 0.5);
+        drive.forwardPivotTurn(((-43 + turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(93.5, 0.5);
+        drive.linearDrive(104.5 + linearCorrectionFactor, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(10, 0.5);
         drive.waitForCompletion();
         drive.linearDrive(-10, 0.5);
         drive.waitForCompletion();
-        drive.tankTurn((-35.5 * orientation)+turnCorrectionFactor, 0.5);
+        drive.tankTurn(((-35.5 + turnCorrectionFactor) * orientation), 0.5);
         drive.waitForCompletion();
-        drive.linearDrive(28, 0.5);
+        drive.linearDrive(19.5 + linearCorrectionFactor2, 0.5);
         drive.waitForCompletion();
 
     }

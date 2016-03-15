@@ -10,8 +10,8 @@ public class bluefartest extends LinearOpMode
     public void runOpMode(){
         //Prepare
         telemetry.addData("Tests", "Starting in Sample Master");
-        AutoSections stepToTest = Autosections.POSITION2START;
-        TestLinear sample = new MasterLinear("BLUE",2,0,false,this);
+        AutoSections stepToTest = AutoSections.POSITION2START;
+        TestLinear sample = new TestLinear("BLUE",2,0,false,this, stepToTest);
         telemetry.addData("Tests", "I'M READY FOR FREADY!");
         //Do
         try{

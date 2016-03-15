@@ -20,7 +20,7 @@ public class LinearMotor extends SimpleMotor implements Runnable, Auto {
     //Constants
     public static final double WHEEL_SIZE =4;
     public static final double GEAR_RATIO = 1;
-    public static final int TOLERANCE = 15;
+    public static final int TOLERANCE = 20;
     //Constructor
     LinearMotor(DcMotor myMotor, String myName, boolean encoderCheck, boolean isReversed){
         super(myMotor, myName, encoderCheck);

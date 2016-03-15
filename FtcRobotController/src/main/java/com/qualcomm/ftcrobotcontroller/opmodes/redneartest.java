@@ -3,15 +3,14 @@ package com.qualcomm.ftcrobotcontroller.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 /**
- * Created by Walnut Robotics on 3/13/2016.
+ * Created by Walnut Robotics on 3/15/2016.
  */
-public class blueneartest extends LinearOpMode
-{
+public class redneartest extends LinearOpMode {
     public void runOpMode(){
         //Prepare
         telemetry.addData("Tests", "Starting in Sample Master");
         AutoSections stepToTest = AutoSections.POSITION1START;
-        TestLinear sample = new TestLinear("BLUE",2,0,false,this, stepToTest);
+        TestLinear sample = new TestLinear("RED",2,0,false,this, stepToTest);
         telemetry.addData("Tests", "I'M READY FOR FREADY!");
         //Do
         try{
